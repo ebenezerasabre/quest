@@ -233,10 +233,8 @@ io.on('connection', (socket) => {
         !rejects.includes(updatedSockets[obj.driverId])
         ){
         // driver proximity to user
-        var proximity = parseFloat(reqDetails.lat) - parseFloat(obj.lat);
-        // result always positive number
-        proximity = proximity < 0 ? (proximity *= -1) : proximity; 
-        // add fromUser property to driver obj
+        var proximity = distanceBtwn(reqDetails.lat, obj.lat, reqDetails.lng, obj.lng);
+
         obj.proximity = proximity.toString(); 
         return obj;
     }
@@ -273,9 +271,9 @@ io.on('connection', (socket) => {
         }
     });
 
-    /**
-     * UserOnline not neccessary as user can get socketId on connection
-     */
+
+    // in android client, userOnline is emitted when coordinates
+    // are availible in moveCamera method
     socket.on('userOnline', (userOnlineDetails) => {
             var obj = JSON.parse(userOnlineDetails);
             // console.log('Online called userType: ' + obj.userType);
@@ -290,7 +288,8 @@ io.on('connection', (socket) => {
             console.log('user online length ' + usersOnline.length);
     });
 
-    // update diver location at interval
+    // in android client, userOnline is emitted when coordinates
+    // are availible in moveCamera method
     socket.on('driverOnline', (driverOnlineDetails) => {
         var obj = JSON.parse(driverOnlineDetails);
         updatedSockets[obj.driverId] = obj.socketId;
@@ -360,49 +359,65 @@ io.on('connection', (socket) => {
 
     // if user get's disconnected
     function userOffline(socketId){
-         /**
-         * Remove user from online
-         */
-        if (usersOnline.includes(socketId)){
-            usersOnline = usersOnline.filter(function(obj){
-                if(obj.socketId === socketId){
-                    updatedSockets[obj.userId] = '';
-                     return;
-                    } 
-               
-                else { return obj; }
-            });
-            console.log('user is offline with id: ' + socketId);
-        }
-         /**
-         * Remove driver from online
-         */
-        else if (driversOnline.includes(socketId)){
-            driversOnline = driversOnline.filter(function(obj){
-                if(obj.socketId === socketId){ 
-                    updatedSockets[obj.userId] = '';
-                    return; 
-                }
-                else { return obj; }
-            });
-
-             /** * If driver is part of busy drivers remove him*/
-            if(busyDrivers.includes(socketId)){
-                busyDrivers = busyDrivers.filter(function(id){
-                    if(id === socketId){ return; }
-                    else { return id; }
-                });
+        /**
+     * Remove user from online
+     */
+        usersOnline = usersOnline.filter(function(obj){
+            if(obj.socketId === socketId){
+                updatedSockets[obj.userId] = '';
+                    return;
+                } 
+            
+            else { return obj; }
+        });
+        console.log("user length " + usersOnline.length);
+    
+        /** Remove driver from online */
+        driversOnline = driversOnline.filter(function(obj){
+            if(obj.socketId === socketId){ 
+                updatedSockets[obj.userId] = '';
+                return; 
             }
-            console.log('driver is offline with id: ' + socketId);
-        }
-      
+            else { return obj; }
+        });
+
+        /** If driver is part of busy drivers remove him */
+        busyDrivers = busyDrivers.filter(function(id){
+            if(id === socketId){ return; }
+            else { return id; }
+        });
+        console.log('Driver length ' + driversOnline.length);
+    
     }
 
-    // socket.on('private', (extras) => {
-    //     var extra = {};
-    //     extra = JSON.parse(extras);
-    //     privateChat(extra.userId, extra.msg);
-    // });
+    function distanceBtwn(lat1, lat2, lng1, lng2){
+        // dinstance btwn user and drivers
+        // convert degrees to radians
+        lat1 = toRadians(lat1);
+        lat2 = toRadians(lat2);
+        lng1 = toRadians(lng1);
+        lng2 = toRadians(lng2);
+
+        // Haversine formula
+        var dLat = lat2 - lat1;
+        var dLng = lng2 - lng1;
+
+        var a = Math.pow(Math.sin(dLat / 2), 2) 
+        + Math.cos(lat1) * Math.cos(lat2) 
+        * Math.pow(Math.sin(dLng / 2), 2);
+
+        var c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth 3956 miles or 6371 km
+        var r = 6371;
+        // result in km
+        return c * r;
+    }
+
+    function toRadians(degress){
+        var pi = Math.PI;
+        return degress * (pi/180);
+    }
     
 
 });
