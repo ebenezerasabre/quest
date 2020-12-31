@@ -310,17 +310,33 @@ io.on('connection', (socket) => {
     // if user comes online
     function addUserOnline(user){
         for(var y=0;y<usersOnline.length;y++){
-            if(usersOnline[y].userId === user.userId){ return; }
+            if(usersOnline[y].userId === user.userId){ 
+                usersOnline[y] = user;
+                return; 
+            }
         }
         usersOnline.push(user);
+        console.log("Adding user");
+        for(var u=0;u<usersOnline.length;u++){
+            console.log(usersOnline[u]);
+        }
     }
 
     function addDriverOnline(driver){
         for(var y=0;y<driversOnline.length;y++){
-            if(driversOnline[y].driverId === driver.driverId){return;} 
+            if(driversOnline[y].driverId === driver.driverId){
+                driversOnline[y] = driver;
+                return;
+            } 
         }
         driversOnline.push(driver);
+        console.log("Adding driver");
+        for(var u=0;u<driversOnline.length;u++){
+            console.log(driversOnline[u]);
+        }
     }
+
+
 
     function notifyUserOnline(userId){
         usersOnline.filter(function(userOnline){
