@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+</head>
+<body>
+    <h1>Welocme to chase website</h1>
+    <ul id="messages"></ul>
+    <form action="" id="form">
+        <input id="userId" autocomplete="off" placeholder="userId" />
+        <input id="msg" autocomplete="off" placeholder="msg" /> 
+        <input type="submit" name="submit" id="m2" autocomplete="off" /> 
+      </form>
+    <script>
+        var socket = io();
+        const name = "Ebenzer Asabre";
+
+        $(document).ready(() => {
+
+
+            $('#form').submit(function(e){
+                e.preventDefault();
+                let extra = {userId: $('#userId').val(), msg: $('#msg').val()}
+                $('#msg').val('');
+                socket.emit('private', JSON.stringify(extra));
+            })
+           
+            setInterval(sendJoin, 3000);
+            function sendJoin(){
+                socket.emit('join',  name);
+                // socket.emit('requestRide', str);
+            }
+
+            socket.emit('userOnline', JSON.stringify({userId: "1234", city: "Kumasi"}));
+
+        });
+
+
+
+        socket.on('userJoined', (userName) => {
+            // console.log("Welcome to the chat " + userName);
+        });
+
+        socket.on('androidHere', (brand) => {
+            console.log('The android phone is ' + brand);
+        });
+
+        socket.on('first', (msg) => {
+            console.log("Receiving " + msg);
+        });
+
+        socket.on('private', (msg) => {
+            console.log("Private msg is " + msg);
+        });
+        
+    </script>
+</body>
+</html>

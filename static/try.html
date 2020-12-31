@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+</head>
+<body>
+    <h1>Welocme to chase website</h1>
+    <ul id="messages"></ul>
+
+    <form action="" id="form">
+      <!-- <input id="userId" autocomplete="off" placeholder="userId" />
+      <input id="msg" autocomplete="off" placeholder="msg" /> 
+      <input type="submit" name="submit" id="m2" autocomplete="off" />  -->
+
+
+      <!-- <input type="submit" name="Request ride" id="requestRide" autocomplete="off" />  -->
+    </form>
+
+    <Button id="userClick">user click</Button>
+    <Button id="driverClick">driver click</Button>
+
+    <br />
+
+    <input type="text" id="userId" placeholder="userId" />
+    <input type="text" id="userType" placeholder="userType" />
+    <input type="text" id="city" placeholder="city" />
+    <Button id="userOnline">user online</Button>
+    <Button id="driverOnline">driver online</Button>
+
+    <h1>Requesting ride</h1>
+    <input style="margin: 10px;" type="text" id="entryPoint" placeholder="entryPoint" /> <br />
+    <input style="margin: 10px;" type="text" id="exitPoint" placeholder="exitPoint" /> <br />
+    <input style="margin: 10px;" type="text" id="lat" placeholder="lat" /> <br />
+
+    <input style="margin: 10px;" type="text" id="lng" placeholder="lng" /> <br />
+    <Button style="margin: 10px;"            id="request">Request ride</Button> <br />
+    <Button style="margin: 10px;"            id="busyDriver">Driver busy</Button>  <br />
+    <Button style="margin: 10px;"            id="freeDriver">Driver free</Button> <br />
+    <Button style="margin: 10px;"            id="accept">Driver Accept Ride</Button> <br />
+    <Button style="margin: 10px;"            id="rejectRide">Driver reject Ride</Button> <br />
+    <Button style="margin: 10px;"            id="startRide">start Ride</Button> <br />
+    <Button style="margin: 10px;"            id="finishRide">Finish Ride</Button> <br />
+    <script>
+        var socket = io();
+        const name = "Owura Kwame";
+
+          // socketId is update immdediately user is connected to network
+        var mSocketId = ""; 
+      
+        var userId = "";
+        var personOnline = {};
+        var userOnline = {};
+        var driverOnline = {};
+        var request = {};
+
+        // user requesting ride
+      
+
+        $(document).ready(() => {
+
+            $('#userClick').click(function(e){
+                $('#busyDriver').hide();
+                $('#freeDriver').hide();
+                $('#accept').hide();
+                $('#startRide').hide();
+                $('#driverOnline').hide();
+                $('#driverClick').hide();
+                $('#userType').val('user');
+            });
+
+            $('#driverClick').click(function(e){
+                $('#request').hide();
+                $('#userType').val('driver');
+                $('#userOnline').hide();
+                $('#userClick').hide();
+                $('#entryPoint').hide();
+                $('#exitPoint').hide();
+            });
+
+            $('#userOnline').click(function(e){
+                var userOnlineDetails = {
+                    userId: $('#userId').val(),
+                    userType: $('#userType').val(),
+                    socketId: mSocketId,
+                };
+                   socket.emit('userOnline', JSON.stringify(userOnlineDetails));
+            });
+
+            $('#driverOnline').click(function(e){
+                var driverOnlineDetails = {
+                    driverId: $('#userId').val(),
+                    userType: $('#userType').val(),
+                    city: $('#city').val(),
+                    lat: $('#lat').val(),
+                    lng: $('#lng').val(),
+                    rideType: "car",
+                };
+                   socket.emit('driverOnline', JSON.stringify(driverOnlineDetails));
+            });
+
+            $('#request').click(function(e){
+
+                var requestDetails = {
+                    // user details
+                    userId: $('#userId').val(),
+                    userType: $('#userType').val(),
+                    phoneNumber: '',
+                    socketId: mSocketId,
+                    // socketId: userOnline.socketId,
+                    entryPoint: $('#entryPoint').val(),
+                    exitPoint: $('#exitPoint').val(),
+
+                    // now part of entryPoint
+                    lat: $('#lat').val(),
+                    lng: $('#lng').val(),
+                    city: $('#city').val().toLowerCase(),
+                    rideType: "car",
+                    proximityDriver: "",
+                 
+                    // driver details
+                    driverId: "",
+                    dSocketId: "",
+                    dLat: "",
+                    dLng: "",
+                    dArrivalTime: "",
+
+                    dName: "",
+                    dRideDescription: "",
+                    dRideNumber: "",
+                    dFinishedRides: "",
+                    driverReject: "",
+
+                    fee: "",
+                    rideState: "pending", //pending,picking,start,finish,cancel
+                }
+
+                socket.emit('request', JSON.stringify(requestDetails));
+            });
+
+            $('#startRide').click(function(e){
+                request.rideState = "start";
+                socket.emit('startRide', JSON.stringify(request));
+            });
+
+            $('#finishRide').click(function(e){
+                // either user or driver can finish ride
+                request.rideState = "finish";
+                socket.emit('finishRide', JSON.stringify(request));
+            });
+
+            $('#rejectRide').click(function(e){
+                request.driverReject += mSocketId +',';
+                socket.emit('request', JSON.stringify(request));
+                request = {};
+            });
+
+            $('#busyDriver').click(function(e){
+                console.log('Sending busy driver socketId ' + personOnline.socketId);
+                socket.emit('busyDriver', personOnline.socketId);
+            });
+
+            $('#freeDriver').click(function(e){
+                console.log('Sending free driver socketId ' + personOnline.socketId);
+                socket.emit('freeDriver', personOnline.socketId);
+            });
+
+        
+            /**
+             *  Repeat this emission to update driver arriving time
+             *  Driver should be able to start journey when he arrives
+             *  at user's location
+             * Pressing start button should route the driver from user's
+             * entryPoint to exitPoint
+             */
+            
+            // driver accepting ride request
+            $('#accept').click(function(e){
+                console.log('Accepting ride request');
+                request.driverId = $('#userId').val();
+                request.dSocketId  = mSocketId;
+                request.dLat = driverOnline.lat;
+                request.dLng = driverOnline.lng;
+                request.dArrivalTime = "3";
+                request.dName = "Kwadwo Oppong Nkrumah";
+                request.dRideDescription = "Toyota Camry 2019 model";
+                request.dRideNumber = "AS 234t";
+                request.dFinishedRides = "";
+                request.rideState = "picking";
+
+                console.log(JSON.stringify(request));
+                socket.emit('acceptRide', JSON.stringify(request));
+            });
+
+        });
+
+
+        socket.on('userJoined', (userName) => {
+            console.log("Welcome to the chat " + userName);
+        });
+
+        socket.on('androidHere', (brand) => {
+            console.log('The android phone is ' + brand);
+        });
+
+        // immediately user is connected to websocket
+        socket.on('socketId', (socketId) => {
+            mSocketId = socketId;
+            console.log('The mSocketId : ' + mSocketId);
+        });
+
+        socket.on('userOnline', (user) => {
+            userOnline = JSON.parse(user);
+            console.log(userOnline.userType + ' online with ' + JSON.stringify(userOnline));
+        });
+        socket.on('driverOnline', (driver) => {
+            driverOnline = JSON.parse(driver);
+            console.log(driverOnline.userType + ' online with ' + JSON.stringify(driverOnline));
+        });
+
+        // receiving ride request
+        socket.on('targetDriver', (requestDetails) => {
+            console.log('The request details are ');
+            console.log(requestDetails);
+            request = JSON.parse(requestDetails);
+        });
+
+        socket.on('acceptRide', (requestDetails) => {
+            console.log('Accepted request details : ' + requestDetails);
+            request = JSON.parse(requestDetails);
+        });
+
+        socket.on('startRide', (requestDetails) => {
+            console.log('Starting ride with : ' + requestDetails);
+            request = JSON.parse(requestDetails);
+        });
+
+        socket.on('finishRide', (requestDetails) => {
+            console.log('Ride completed successfully with : ' + requestDetails);
+            request = JSON.parse(requestDetails);
+        });
+
+        
+    </script>
+</body>
+</html>
