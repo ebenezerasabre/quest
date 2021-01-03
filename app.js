@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
+const { loadavg } = require('os');
 
 
 http.listen(3000, ()=>{ console.log('ewquest node server running'); });
@@ -145,6 +146,8 @@ io.on('connection', (socket) => {
     });
 
     function userAndDriverUpdate(reqDetails, status){
+        console.log('user socket ' + updatedSockets[reqDetails.userId]);
+        console.log('driver socket ' + updatedSockets[reqDetails.userId]);
         io.to(updatedSockets[reqDetails.userId]).emit(status, JSON.stringify(reqDetails));
         io.to(updatedSockets[reqDetails.driverId]).emit(status, JSON.stringify(reqDetails));
     }
