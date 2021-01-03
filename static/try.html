@@ -42,9 +42,9 @@
     <Button style="margin: 10px;"            id="busyDriver">Driver busy</Button>  <br />
     <Button style="margin: 10px;"            id="freeDriver">Driver free</Button> <br />
     <Button style="margin: 10px;"            id="accept">Driver Accept Ride</Button> <br />
-    <Button style="margin: 10px;"            id="rejectRide">Driver reject Ride</Button> <br />
-    <Button style="margin: 10px;"            id="startRide">start Ride</Button> <br />
-    <Button style="margin: 10px;"            id="finishRide">Finish Ride</Button> <br />
+    <Button style="margin: 10px;"            id="reject">Driver cancel Ride</Button> <br />
+    <Button style="margin: 10px;"            id="start">start Ride</Button> <br />
+    <Button style="margin: 10px;"            id="finish">Finish Ride</Button> <br />
     <script>
         var socket = io();
         const name = "Owura Kwame";
@@ -67,7 +67,7 @@
                 $('#busyDriver').hide();
                 $('#freeDriver').hide();
                 $('#accept').hide();
-                $('#startRide').hide();
+                $('#start').hide();
                 $('#driverOnline').hide();
                 $('#driverClick').hide();
                 $('#userType').val('user');
@@ -143,18 +143,19 @@
                 socket.emit('request', JSON.stringify(requestDetails));
             });
 
-            $('#startRide').click(function(e){
+            $('#start').click(function(e){
                 request.rideState = "start";
-                socket.emit('startRide', JSON.stringify(request));
+                socket.emit('start', JSON.stringify(request));
             });
 
-            $('#finishRide').click(function(e){
+            $('#finish').click(function(e){
                 // either user or driver can finish ride
                 request.rideState = "finish";
-                socket.emit('finishRide', JSON.stringify(request));
+                socket.emit('finish', JSON.stringify(request));
             });
 
-            $('#rejectRide').click(function(e){
+            $('#reject').click(function(e){
+                request.rideState = "cancel";
                 request.driverReject += mSocketId +',';
                 socket.emit('request', JSON.stringify(request));
                 request = {};
@@ -191,10 +192,10 @@
                 request.dRideDescription = "Toyota Camry 2019 model";
                 request.dRideNumber = "AS 234t";
                 request.dFinishedRides = "";
-                request.rideState = "picking";
+                request.rideState = "accept";
 
                 console.log(JSON.stringify(request));
-                socket.emit('acceptRide', JSON.stringify(request));
+                socket.emit('accept', JSON.stringify(request));
             });
 
         });
@@ -230,17 +231,17 @@
             request = JSON.parse(requestDetails);
         });
 
-        socket.on('acceptRide', (requestDetails) => {
+        socket.on('accept', (requestDetails) => {
             console.log('Accepted request details : ' + requestDetails);
             request = JSON.parse(requestDetails);
         });
 
-        socket.on('startRide', (requestDetails) => {
+        socket.on('start', (requestDetails) => {
             console.log('Starting ride with : ' + requestDetails);
             request = JSON.parse(requestDetails);
         });
 
-        socket.on('finishRide', (requestDetails) => {
+        socket.on('finish', (requestDetails) => {
             console.log('Ride completed successfully with : ' + requestDetails);
             request = JSON.parse(requestDetails);
         });

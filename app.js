@@ -119,15 +119,13 @@ io.on('connection', (socket) => {
         removeRequestFromQueue(reqDetails.userId);
         removeFromBusyDrivers(reqDetails.dSocketId);
         userAndDriverUpdate(reqDetails, 'start');
-
-        showBusyDrivers();
     });
 
     socket.on('finish', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
         userAndDriverUpdate(reqDetails, 'finish');
 
-        showBusyDrivers();
+    
     });
 
     // when driver accepts users request
@@ -136,7 +134,7 @@ io.on('connection', (socket) => {
         // removeRequestFromQueue(reqDetails.userId);
         userAndDriverUpdate(reqDetails, 'accept');
 
-        showBusyDrivers();
+
     });
 
     // when driver or user cancels request
