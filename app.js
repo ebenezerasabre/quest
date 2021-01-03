@@ -114,29 +114,42 @@ io.on('connection', (socket) => {
     });
 
     // starts ride when driver picks up user
-    socket.on('startRide', (requestDetails) => {
+    socket.on('start', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
-        removeFromBusyDrivers(updatedSockets[reqDetails.driverId]);
-        userAndDriverUpdate(reqDetails, 'startRide');
+        removeRequestFromQueue(reqDetails.userId);
+        removeFromBusyDrivers(reqDetails.dSocketId);
+        userAndDriverUpdate(reqDetails, 'start');
+
+        showBusyDrivers();
     });
 
-    socket.on('finishRide', (requestDetails) => {
+    socket.on('finish', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
-        removeFromBusyDrivers(updatedSockets[reqDetails.driverId]);
-        userAndDriverUpdate(reqDetails, 'finishRide');
+        userAndDriverUpdate(reqDetails, 'finish');
+
+        showBusyDrivers();
+    });
+
+    // when driver accepts users request
+    socket.on('accept', (requestDetails) => {
+        var reqDetails = JSON.parse(requestDetails);
+        // removeRequestFromQueue(reqDetails.userId);
+        userAndDriverUpdate(reqDetails, 'accept');
+
+        showBusyDrivers();
+    });
+
+    // when driver or user cancels request
+    socket.on('cancel', (requestDetails) => {
+        var reqDetails = JSON.parse(requestDetails);
+        removeRequestFromQueue(reqDetails.userId);
+        userAndDriverUpdate(reqDetails, 'cancel');
     });
 
     function userAndDriverUpdate(reqDetails, status){
         io.to(updatedSockets[reqDetails.userId]).emit(status, JSON.stringify(reqDetails));
         io.to(updatedSockets[reqDetails.driverId]).emit(status, JSON.stringify(reqDetails));
     }
-
-    // when driver accepts users request
-    socket.on('acceptRide', (requestDetails) => {
-        var reqDetails = JSON.parse(requestDetails);
-        removeRequestFromQueue(reqDetails.userId);
-        userAndDriverUpdate(reqDetails, 'acceptRide');
-    });
 
 
     function removeRequestFromQueue(userId) {
@@ -245,7 +258,10 @@ io.on('connection', (socket) => {
         console.log(drivers[c]);
     }
     console.log('Drivers online length ' + driversOnline.length);
+
+
     return drivers.sort((a, b) => a.proximity - b.proximity);
+     
    }
 
     function showBusyDrivers(){
