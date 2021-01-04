@@ -162,13 +162,15 @@
             });
 
             $('#busyDriver').click(function(e){
-                console.log('Sending busy driver socketId ' + personOnline.socketId);
-                socket.emit('busyDriver', personOnline.socketId);
+                console.log('Sending busy driver socketId ' + driverOnline.driverId);
+                socket.emit('busyDriver', driverOnline.driverId);
             });
 
             $('#freeDriver').click(function(e){
-                console.log('Sending free driver socketId ' + personOnline.socketId);
-                socket.emit('freeDriver', personOnline.socketId);
+                // console.log('Sending free driver socketId ' + personOnline.socketId);
+                // socket.emit('freeDriver', personOnline.socketId);
+                console.log('Sending free driver with id ' + driverOnline.driverId);
+                socket.emit('freeDriver', driverOnline.driverId);
             });
 
         
