@@ -35,7 +35,7 @@ exports.findHistoryById = (req, res) => {
 
 // find user history
 exports.findUserHistory = (req, res) => {
-    HistoryModel.find( { userId: { $eq: req.params.id } } )
+    HistoryModel.find( { userId: {$eq: req.params.id} } )
     .then((histories) => {
         if(histories){
             return res.status(200).send(histories);
