@@ -34,6 +34,19 @@ exports.findUserById = (req, res) => {
 };
 
 
+exports.signInUser = (req, res) => {
+    UserModel.find( { phoneNumber: {$eq: req.params.id} })
+    .then((user) => {
+        if(user){
+            return res.status(200).send(user);
+        }
+        return res.status(404).send({message: "User not found"});
+    })
+    .catch((err) => {
+        return res.status(500).send({message: err.message});
+    });
+};
+
 
  /**
  * TODO COUNT
