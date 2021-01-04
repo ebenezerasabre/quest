@@ -126,7 +126,6 @@ io.on('connection', (socket) => {
         var reqDetails = JSON.parse(requestDetails);
         userAndDriverUpdate(reqDetails, 'finish');
 
-    
     });
 
     // when driver accepts users request
@@ -151,7 +150,6 @@ io.on('connection', (socket) => {
         io.to(updatedSockets[reqDetails.userId]).emit(status, JSON.stringify(reqDetails));
         io.to(updatedSockets[reqDetails.driverId]).emit(status, JSON.stringify(reqDetails));
     }
-
 
     function removeRequestFromQueue(userId) {
         requestQueue.filter(function(queue) {
@@ -182,8 +180,8 @@ io.on('connection', (socket) => {
     });
 
     function sendRequestToClosestDriver(requestDetails){
-        io.to(requestDetails.proximityDriver).emit("targetDriver", JSON.stringify(requestDetails));
-        addToBusyDrivers(requestDetails.proximityDriver);
+        io.to(updatedSockets[requestDetails.proximityDriver]).emit("targetDriver", JSON.stringify(requestDetails));
+        addToBusyDrivers(updatedSockets[requestDetails.proximityDriver]);
     }
 
     /**
@@ -221,7 +219,8 @@ io.on('connection', (socket) => {
     function addProximityDriver(proximityDrivers, requestDetail){
         if(proximityDrivers.length > 0){
             var zeroIndex = 0;
-            requestDetail.proximityDriver = proximityDrivers[zeroIndex].socketId;
+            // requestDetail.proximityDriver = proximityDrivers[zeroIndex].socketId;
+            requestDetail.proximityDriver = proximityDrivers[zeroIndex].driverId;
         }
         return requestDetail;
     }
@@ -273,21 +272,22 @@ io.on('connection', (socket) => {
         }
     }
 
-    socket.on('busyDriver', (driverSocketId) => {
-        if(!busyDrivers.includes(driverSocketId)){
-            console.log('Receving busy drive socketId ' + driverSocketId);
-            addToBusyDrivers(driverSocketId);
-            showBusyDrivers();
-        }
-    });
-    socket.on('freeDriver', (driverSocketId) => {
-        if(busyDrivers.includes(driverSocketId)){
-            console.log('feeing driver');
-            removeFromBusyDrivers(driverSocketId);
+    socket.on('busyDriver', (driverId) => {
+        if(!busyDrivers.includes(updatedSockets[driverId])){
+            console.log('Receving busy drive socketId ' + updatedSockets[driverId]);
+            addToBusyDrivers(updatedSockets[driverId]);
             showBusyDrivers();
         }
     });
 
+ 
+    socket.on('freeDriver', (driverId) => {
+        if(busyDrivers.includes(updatedSockets[driverId])){
+            console.log('freeing driver with id ' + driverId);
+            removeFromBusyDrivers(updatedSockets[driverId]);
+            showBusyDrivers();
+        }
+    });
 
     // in android client, userOnline is emitted when coordinates
     // are availible in moveCamera method
