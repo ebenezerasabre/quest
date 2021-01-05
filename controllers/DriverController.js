@@ -35,6 +35,19 @@ exports.findDriverById = (req, res) => {
 
 };
 
+exports.signInDriver = (req, res) => {
+    DriverModel.find( { phoneNumber: {$eq: req.params.id} })
+    .then((driver) => {
+        if(driver){
+            return res.status(200).send(driver);
+        }
+        return res.status(404).send({message: "Error signing driver"});
+    })
+    .catch((err) => {
+        return res.status(500).send({message: err.message});
+    })
+};
+
 
  /**
  * TOOD COUNT
