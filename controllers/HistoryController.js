@@ -40,12 +40,26 @@ exports.findUserHistory = (req, res) => {
         if(histories){
             return res.status(200).send(histories);
         }
-        return res.status(404).send({message: "History not found"});
+        return res.status(404).send({message: "User History not found"});
     })
     .catch((err) => {
         return res.status(500).send({message: err.message});
     });
 };
+
+exports.findDriverHistory = (req, res) => {
+    HistoryModel.find( { driverId: {$eq: req.params.id} } )
+    .then((histories) => {
+        if(histories){
+            return res.status(200).send(histories);
+        }
+        return res.status(404).send({message: "Driver history not found"});
+    })
+    .catch((err) => {
+        return res.status(500).send({message: err.message});
+    });
+}
+
 
  /**
  * TODO COUNT
