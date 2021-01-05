@@ -5,6 +5,7 @@ const HistoryController = require('../controllers/HistoryController');
 historyRouter.get('/', HistoryController.findAllHistory);
 historyRouter.get('/count', HistoryController.countHistory);
 historyRouter.get('/user/:id', HistoryController.findUserHistory);
+historyRouter.get('/driver/:id', HistoryController.findDriverHistory);
 historyRouter.get('/:id', HistoryController.findHistoryById);
 
 historyRouter.post('/', HistoryController.createHistory);
