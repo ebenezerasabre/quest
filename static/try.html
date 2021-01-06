@@ -36,8 +36,9 @@
     <input style="margin: 10px;" type="text" id="entryPoint" placeholder="entryPoint" /> <br />
     <input style="margin: 10px;" type="text" id="exitPoint" placeholder="exitPoint" /> <br />
     <input style="margin: 10px;" type="text" id="lat" placeholder="lat" /> <br />
-
     <input style="margin: 10px;" type="text" id="lng" placeholder="lng" /> <br />
+    <input style="margin: 10px;" type="text" id="phoneNumber" placeholder="phone" /> <br />
+
     <Button style="margin: 10px;"            id="request">Request ride</Button> <br />
     <Button style="margin: 10px;"            id="busyDriver">Driver busy</Button>  <br />
     <Button style="margin: 10px;"            id="freeDriver">Driver free</Button> <br />
@@ -111,7 +112,7 @@
                     userName: "First name",
                     userId: $('#userId').val(),
                     userType: $('#userType').val(),
-                    phoneNumber: '',
+                    phoneNumber: $('#phoneNumber').val(),
                     socketId: mSocketId,
                     // socketId: userOnline.socketId,
                     entryPoint: $('#entryPoint').val(),
