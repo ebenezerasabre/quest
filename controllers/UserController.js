@@ -152,9 +152,13 @@ exports.createUser = (req, res) => {
 
  };
 
+ 
  //delete all user records
  exports.deleteAllUsers = (req, res) => {
-     UserModel.find().remove().then(() => {
+     UserModel
+     .find()
+     .remove()
+     .then(() => {
         return res.status(200).send({message: "Deleted all user records"});
      })
      .catch((err) => {
