@@ -35,6 +35,8 @@ exports.findReviewById = (req, res) => {
 };
 
 exports.findUserReviews = (req, res) => {
+    // ReviewModel.findOneAndUpdate()
+
     ReviewModel.find( { userId: { $eq: req.params.id } })
     .then((reviews) => {
         if(reviews){

@@ -23,6 +23,7 @@
 
     <Button id="userClick">user click</Button>
     <Button id="driverClick">driver click</Button>
+    <Button id="insideHistory">Inside history</Button>
 
     <br />
 
@@ -138,7 +139,7 @@
                     dFinishedRides: "",
                     driverReject: "",
 
-                    fee: "",
+                    fee: "0.0",
                     rideState: "pending", //pending,picking,start,finish,cancel
                 }
 
@@ -173,6 +174,12 @@
                 // socket.emit('freeDriver', personOnline.socketId);
                 console.log('Sending free driver with id ' + driverOnline.driverId);
                 socket.emit('freeDriver', driverOnline.driverId);
+            });
+
+            $('#insideHistory').click(function(e){
+                console.log("Sending inside history");
+                // socket.emit('insideHistory', "fgh");
+                socket.emit('insideHistory', "fgh");
             });
 
         
@@ -248,6 +255,13 @@
         socket.on('finish', (requestDetails) => {
             console.log('Ride completed successfully with : ' + requestDetails);
             request = JSON.parse(requestDetails);
+        });
+
+
+        // testing
+        socket.on('findUser', (requestDetails) => {
+            console.log('Users details : ' + requestDetails);
+
         });
 
         

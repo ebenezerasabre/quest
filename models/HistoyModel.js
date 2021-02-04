@@ -12,6 +12,19 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    driverLat: {
+        desc: "lat of driver",
+        trim: true,
+        type: String,
+        required: true,
+    },
+    driverLng: {
+        desc: "lng of driver",
+        trim: true,
+        type: String,
+        required: true,
+    },
+
     userId: {
         desc: "User id of user",
         trim: true,
@@ -24,7 +37,6 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
     city: {
         desc: "City of transit",
         trim: true,
@@ -37,6 +49,7 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    
     exitPoint: {
         desc: "User destination",
         trim: true,

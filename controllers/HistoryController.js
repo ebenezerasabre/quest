@@ -1,4 +1,3 @@
-const HistoyModel = require('../models/HistoyModel');
 const HistoryModel = require('../models/HistoyModel');
 
 /**
@@ -95,10 +94,14 @@ exports.createHistory = (req, res) => {
     const History = new HistoryModel({
         driverId: req.body.driverId,
         driverName: req.body.driverName,
+        driverLat: req.body.driverLat,
+        driverLng: req.driverLng,
+
         userId: req.body.userId,
         userName: req.body.userName,
         city: req.body.city,
         entryPoint: req.body.entryPoint,
+
         exitPoint: req.body.exitPoint,
         status: req.body.status,
         fee: req.body.fee
@@ -114,6 +117,46 @@ exports.createHistory = (req, res) => {
         return res.status(500).send({message: err.message});
     });
 };
+
+// create inside
+exports.insideCreateHistory = (body) => {
+
+    console.log("The insider");
+    console.log(body);
+
+    if(!body.driverId || !body.userId){
+       console.log('Inside create history cannot be empty');
+    }
+
+    const History = new HistoryModel({
+        driverId: body.driverId,
+        driverName: body.dName,
+        driverLat: body.dLat,
+        driverLng: body.dLng,
+
+        userId: body.userId,
+        userName: body.userName,
+        city: body.city,
+        entryPoint: body.entryPoint,
+        
+        exitPoint: body.exitPoint,
+        status: body.rideState,
+        fee: body.fee
+    });
+
+    History.save().then((history) => {
+        if(history){
+            console.log(history);
+            return;
+        }
+        console.log("Couldn't create history");
+    })
+    .catch((err) => {
+        console.log("Error creating history: " + err);
+    });
+
+};
+
 
  /**
  * TODO UPDATE
@@ -158,7 +201,7 @@ exports.deleteHistory = (req, res) => {
 
 // delete all history records
 exports.deleteAllHistory = (req, res) => {
-    HistoyModel.find()
+    HistoryModel.find()
     .deleteMany()
     .then(() => {
         return res.status(200).send({message: "Deleted all history records"});

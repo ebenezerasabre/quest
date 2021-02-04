@@ -3,7 +3,12 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
-const { loadavg } = require('os');
+const UserModel = require('./models/UserModel');
+const HistoryModel = require('./models/HistoyModel');
+
+// const HistoryController = require('./controllers/HistoryController');
+const RideRequestController = require('./controllers/RideRequestController');
+
 
 
 http.listen(3000, ()=>{ console.log('ewquest node server running'); });
@@ -41,6 +46,9 @@ app.use("/history", require('./routes/HistoryRoutes'));
 app.use("/review", require('./routes/ReviewRoutes'));
 // Support routes
 app.use("/support", require('./routes/SupportRoutes'));
+// rideRequest routes
+app.use("/ride", require('./routes/RideRequestRoutes'));
+
 
 /** 
  * Users online at the moment 
@@ -84,7 +92,6 @@ var busyDrivers = [];
 
 
 
-
 /**
  * SOCKETS
  */
@@ -94,9 +101,41 @@ var busyDrivers = [];
 //io.emit will send the event to all users including the the sender 
 
 io.on('connection', (socket) => {
+    var obj = [];
     console.log('User first connection to socket');
 
     io.to(socket.id).emit('socketId', socket.id);
+
+    // findUsers();
+
+// starts
+
+
+function findUsers(){
+    UserModel.find()
+    .then((users) => {
+       if(users){
+           io.to(socket.id).emit('findUser', JSON.stringify(users));
+           console.log(users);
+       }
+       return {message: "Users not found"};
+    })
+    .catch((err) => {
+        return {message: err.message};
+    });
+
+    
+}
+
+
+    // socket.on('insideHistory', (str) => {
+    //     console.log("Recieving insideHistory str : " + str);
+    //     // HistoryController.insideCreateHistory(str);
+    // });
+
+
+// ends
+
 
 
     socket.on('disconnect', () => {
@@ -114,34 +153,14 @@ io.on('connection', (socket) => {
         io.emit('androidHere', brand);
     });
 
-    // starts ride when driver picks up user
-    socket.on('start', (requestDetails) => {
-        var reqDetails = JSON.parse(requestDetails);
-        removeRequestFromQueue(reqDetails.userId);
-        removeFromBusyDrivers(reqDetails.dSocketId);
-        userAndDriverUpdate(reqDetails, 'start');
-    });
-
-    socket.on('finish', (requestDetails) => {
-        var reqDetails = JSON.parse(requestDetails);
-        userAndDriverUpdate(reqDetails, 'finish');
-
-    });
-
-    // when driver accepts users request
-    socket.on('accept', (requestDetails) => {
-        var reqDetails = JSON.parse(requestDetails);
-        // removeRequestFromQueue(reqDetails.userId);
-        userAndDriverUpdate(reqDetails, 'accept');
-
-
-    });
-
+ 
+  
     // when driver or user cancels request
     socket.on('cancel', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
         removeRequestFromQueue(reqDetails.userId);
         userAndDriverUpdate(reqDetails, 'cancel');
+        RideRequestController.updateRideRequestInside(reqDetails);
     });
 
     function userAndDriverUpdate(reqDetails, status){
@@ -149,6 +168,8 @@ io.on('connection', (socket) => {
         console.log('driver socket ' + updatedSockets[reqDetails.userId]);
         io.to(updatedSockets[reqDetails.userId]).emit(status, JSON.stringify(reqDetails));
         io.to(updatedSockets[reqDetails.driverId]).emit(status, JSON.stringify(reqDetails));
+
+        //*** whrite h */
     }
 
     function removeRequestFromQueue(userId) {
@@ -177,7 +198,40 @@ io.on('connection', (socket) => {
         // driver can't receive new request if he has a pending request
         sendRequestToClosestDriver(reqDetails);
 
+           // creating rideRequest 
+        RideRequestController.createRideRequestsInside(reqDetails);
     });
+
+
+    // when driver accepts users request
+    socket.on('accept', (requestDetails) => {
+        var reqDetails = JSON.parse(requestDetails);
+        // removeRequestFromQueue(reqDetails.userId);
+        userAndDriverUpdate(reqDetails, 'accept');
+
+        // updating rideRequest repository
+        RideRequestController.updateRideRequestInside(reqDetails);
+    });
+
+
+    // starts ride when driver picks up user
+    socket.on('start', (requestDetails) => {
+        var reqDetails = JSON.parse(requestDetails);
+        removeRequestFromQueue(reqDetails.userId);
+        removeFromBusyDrivers(reqDetails.dSocketId);
+        userAndDriverUpdate(reqDetails, 'start');
+        RideRequestController.updateRideRequestInside(reqDetails);
+    });
+    
+    socket.on('finish', (requestDetails) => {
+        var reqDetails = JSON.parse(requestDetails);
+        userAndDriverUpdate(reqDetails, 'finish');
+        RideRequestController.updateRideRequestInside(reqDetails);
+
+    });
+    
+
+
 
     function sendRequestToClosestDriver(requestDetails){
         io.to(updatedSockets[requestDetails.proximityDriver]).emit("targetDriver", JSON.stringify(requestDetails));
@@ -434,6 +488,15 @@ io.on('connection', (socket) => {
     function toRadians(degress){
         var pi = Math.PI;
         return degress * (pi/180);
+    }
+
+    function createHistory(requestDetails){
+
+    }
+
+    function updateHistory(requeustDetails){
+        // get id
+
     }
     
 
