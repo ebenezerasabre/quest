@@ -212,7 +212,8 @@ const RideRequestModel = require('../models/RideRequestModel');
 
     // RideRequestModel.find( { userId: { $eq: body.userId }, createdAt: body.createdAt } )
 
-    RideRequestModel.find( { userId: body.userId , createdAt: body.createdAt } )
+    // RideRequestModel.find( { userId: body.userId , createdAt: body.createdAt } )
+    RideRequestModel.find( { createdAt: {$eq: body.createdAt}  } )
     .then((ride) => {
         if(ride){
             RideRequestModel.findOneAndUpdate(body.id, body, {new: true})
