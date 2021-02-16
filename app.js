@@ -7,7 +7,8 @@ const UserModel = require('./models/UserModel');
 const HistoryModel = require('./models/HistoyModel');
 
 // const HistoryController = require('./controllers/HistoryController');
-const RideRequestController = require('./controllers/RideRequestController');
+// const RideRequestController = require('./controllers/RideRequestController');
+const RideRequestModel = require('./models/RideRequestModel');
 
 
 
@@ -159,11 +160,12 @@ function findUsers(){
     socket.on('cancel', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
         removeRequestFromQueue(reqDetails.userId);
-        userAndDriverUpdate(reqDetails, 'cancel');
-        RideRequestController.updateRideRequestInside(reqDetails);
+        // userAndDriverUpdate(reqDetails, 'cancel');
+        // RideRequestController.updateRideRequestInside(reqDetails);
+        updateHistory(reqDetails, 'cancel');
     });
 
-    function userAndDriverUpdate(reqDetails, status){
+    function userAndDriverUpdate(reqDetails, status) {
         console.log('user socket ' + updatedSockets[reqDetails.userId]);
         console.log('driver socket ' + updatedSockets[reqDetails.userId]);
         io.to(updatedSockets[reqDetails.userId]).emit(status, JSON.stringify(reqDetails));
@@ -195,11 +197,13 @@ function findUsers(){
         reqDetails = addProximityDriver(proximityDrivers, reqDetails);
         addRequestToQueue(reqDetails);
 
-        // driver can't receive new request if he has a pending request
-        sendRequestToClosestDriver(reqDetails);
+        // // driver can't receive new request if he has a pending request
+        // sendRequestToClosestDriver(reqDetails);
 
-           // creating rideRequest 
-        RideRequestController.createRideRequestsInside(reqDetails);
+        //    // creating rideRequest 
+        // RideRequestController.createRideRequestsInside(reqDetails);
+
+        createHistory(reqDetails);
     });
 
 
@@ -207,10 +211,11 @@ function findUsers(){
     socket.on('accept', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
         // removeRequestFromQueue(reqDetails.userId);
-        userAndDriverUpdate(reqDetails, 'accept');
+        // userAndDriverUpdate(reqDetails, 'accept');
 
         // updating rideRequest repository
-        RideRequestController.updateRideRequestInside(reqDetails);
+        // RideRequestController.updateRideRequestInside(reqDetails);
+        updateHistory(reqDetails, 'accept');
     });
 
 
@@ -219,14 +224,16 @@ function findUsers(){
         var reqDetails = JSON.parse(requestDetails);
         removeRequestFromQueue(reqDetails.userId);
         removeFromBusyDrivers(reqDetails.dSocketId);
-        userAndDriverUpdate(reqDetails, 'start');
-        RideRequestController.updateRideRequestInside(reqDetails);
+        // userAndDriverUpdate(reqDetails, 'start');
+        // RideRequestController.updateRideRequestInside(reqDetails);
+        updateHistory(reqDetails, 'start');
     });
     
     socket.on('finish', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
-        userAndDriverUpdate(reqDetails, 'finish');
-        RideRequestController.updateRideRequestInside(reqDetails);
+        // userAndDriverUpdate(reqDetails, 'finish');
+        // RideRequestController.updateRideRequestInside(reqDetails);
+        updateHistory(reqDetails, 'finish');
 
     });
     
@@ -490,14 +497,73 @@ function findUsers(){
         return degress * (pi/180);
     }
 
-    function createHistory(requestDetails){
-
+    function createHistory(body){
+        if(!body.userId){
+            console.log("Required field can't be empty");
+            return;
+        }
+        // create
+        const RideRequest = new RideRequestModel({
+    
+            userName: body.userName,
+            userId: body.userId,
+            userType: body.userType,
+            phoneNumber: body.phoneNumber,
+            socketId: body.socketId,
+            entryPoint: body.entryPoint,
+    
+            exitPoint: body.exitPoint,
+            lat: body.lat,
+            lng: body.lng,
+            city: body.city,
+            rideType: body.rideType,
+    
+            proximityDriver: body.proximityDriver,
+            driverId: body.driverId,
+            dSocketId: body.dSocketId,
+            dLat: body.dLat,
+            dLng: body.dLng,
+    
+            dArrivalTime: body.dArrivalTime,
+            dName: body.dName,
+            dRideDescription: body.dRideDescription,
+            dRideNumber: body.dRideNumber,
+            dFinishedRides: body.dFinishedRides,
+    
+            driverReject: body.driverReject,
+            rideState: body.rideState,
+            fee: body.fee
+    
+        });
+    
+        // save
+        RideRequest.save()
+        .then((ride) => {
+            if(ride) {
+                console.log(ride);
+                sendRequestToClosestDriver(ride);
+            }
+            return;
+        }).catch((err) => {
+            console.log(err.message);
+            return;
+        });
     }
 
-    function updateHistory(requeustDetails){
-        // get id
-
+    function updateHistory(body, status){
+        RideRequestModel.findOneAndUpdate(body.id, body, {new: true})
+        .then((ride) => {
+            if(ride){
+               userAndDriverUpdate(ride, status);
+            }
+            return;
+        })
+        .catch((err) => {
+            console.log(err.message);
+            return;
+        });
     }
+
     
 
 });
