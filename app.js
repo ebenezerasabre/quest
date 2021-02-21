@@ -9,6 +9,7 @@ const HistoryModel = require('./models/HistoyModel');
 // const HistoryController = require('./controllers/HistoryController');
 // const RideRequestController = require('./controllers/RideRequestController');
 const RideRequestModel = require('./models/RideRequestModel');
+const { loadavg } = require('os');
 
 
 
@@ -550,9 +551,11 @@ function findUsers(){
     }
 
     function updateHistory(body, status){
-        RideRequestModel.findByIdAndUpdate(body.id, body, {new: true})
+        RideRequestModel.findByIdAndUpdate(body._id, body, {new: true})
         .then((ride) => {
             if(ride){
+                console.log('Updating ride');
+                console.log(ride);
                userAndDriverUpdate(ride, status);
             }
             return;
