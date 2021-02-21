@@ -162,7 +162,7 @@ function findUsers(){
         removeRequestFromQueue(reqDetails.userId);
         // userAndDriverUpdate(reqDetails, 'cancel');
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(requestDetails, 'cancel');
+        updateHistory(reqDetails, 'cancel');
     });
 
     function userAndDriverUpdate(reqDetails, status) {
@@ -215,7 +215,7 @@ function findUsers(){
 
         // updating rideRequest repository
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(requestDetails, 'accept');
+        updateHistory(reqDetails, 'accept');
     });
 
 
@@ -226,17 +226,16 @@ function findUsers(){
         removeFromBusyDrivers(reqDetails.dSocketId);
         // userAndDriverUpdate(reqDetails, 'start');
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(requestDetails, 'start');
+        updateHistory(reqDetails, 'start');
     });
     
     socket.on('finish', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
         // userAndDriverUpdate(reqDetails, 'finish');
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(requestDetails, 'finish');
+        updateHistory(reqDetails, 'finish');
 
     });
-    
 
 
 
@@ -250,11 +249,13 @@ function findUsers(){
      * This is to prevent one driver from getting more than one request at a time
      * @param  driverSocketId 
      */
+
     function addToBusyDrivers(driverSocketId){
         if(!busyDrivers.includes(driverSocketId)){
             busyDrivers.push(driverSocketId);
         }
     }
+
     function removeFromBusyDrivers(driverSocketId){
         if(busyDrivers.includes(driverSocketId)){
             busyDrivers = busyDrivers.filter(function(id){
@@ -264,9 +265,7 @@ function findUsers(){
         }
     }
 
-
     function addRequestToQueue(requestDetails){
-     
         // update old requests
        requestQueue.filter(function(queue){
            if(requestDetails.userId === queue.userId){
@@ -551,7 +550,7 @@ function findUsers(){
     }
 
     function updateHistory(body, status){
-        RideRequestModel.findOneAndUpdate(body.id, body, {new: true})
+        RideRequestModel.findByIdAndUpdate(body.id, body, {new: true})
         .then((ride) => {
             if(ride){
                userAndDriverUpdate(ride, status);
