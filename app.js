@@ -162,7 +162,7 @@ function findUsers(){
         removeRequestFromQueue(reqDetails.userId);
         // userAndDriverUpdate(reqDetails, 'cancel');
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(reqDetails, 'cancel');
+        updateHistory(requestDetails, 'cancel');
     });
 
     function userAndDriverUpdate(reqDetails, status) {
@@ -215,7 +215,7 @@ function findUsers(){
 
         // updating rideRequest repository
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(reqDetails, 'accept');
+        updateHistory(requestDetails, 'accept');
     });
 
 
@@ -226,14 +226,14 @@ function findUsers(){
         removeFromBusyDrivers(reqDetails.dSocketId);
         // userAndDriverUpdate(reqDetails, 'start');
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(reqDetails, 'start');
+        updateHistory(requestDetails, 'start');
     });
     
     socket.on('finish', (requestDetails) => {
         var reqDetails = JSON.parse(requestDetails);
         // userAndDriverUpdate(reqDetails, 'finish');
         // RideRequestController.updateRideRequestInside(reqDetails);
-        updateHistory(reqDetails, 'finish');
+        updateHistory(requestDetails, 'finish');
 
     });
     
