@@ -551,10 +551,11 @@ function findUsers(){
     }
 
     function updateHistory(body, status){
+        console.log('Updating ride outside');
         RideRequestModel.findByIdAndUpdate(body._id, body, {new: true})
         .then((ride) => {
             if(ride){
-                console.log('Updating ride');
+                console.log('Updating ride inside');
                 console.log(ride);
                userAndDriverUpdate(ride, status);
             }
