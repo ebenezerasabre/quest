@@ -91,6 +91,8 @@ exports.createUser = (req, res) => {
         userType: req.body.userType,
         finishedRides: "0",
         rating: "3",
+        homeLocation: "",
+        workLocation: "",
         isActive: "true",
     });
     //save
