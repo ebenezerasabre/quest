@@ -52,11 +52,22 @@ const schema = new mongoose.Schema({
         required: true,
     },
 
+    homeLocation: {
+        desc: "user work location",
+        trim: true,
+        type: String,
+    },
+    workLocation: {
+        desc: "user work location",
+        trim: true,
+        type: String,
+    },
     isActive: {
         desc: "is Active",
         trim: true,
         type: String,
         required: true,
+        
     }
 },
 {
