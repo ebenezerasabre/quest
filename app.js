@@ -216,6 +216,8 @@ function findUsers(){
 
         // updating rideRequest repository
         // RideRequestController.updateRideRequestInside(reqDetails);
+        console.log('driver accepting ');
+        console.log(requestDetails);
         updateHistory(reqDetails, 'accept');
     });
 
