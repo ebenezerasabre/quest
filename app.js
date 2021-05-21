@@ -52,6 +52,12 @@ app.use("/support", require('./routes/SupportRoutes'));
 app.use("/ride", require('./routes/RideRequestRoutes'));
 
 
+// portfolio routing
+app.use('/asabre/projects', (req,res)=>{ res.sendFile(__dirname + '/portfolio/index.html');});
+
+
+
+
 /** 
  * Users online at the moment 
  */

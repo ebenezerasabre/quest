@@ -22,7 +22,6 @@
 
         $(document).ready(() => {
 
-
             $('#form').submit(function(e){
                 e.preventDefault();
                 let extra = {userId: $('#userId').val(), msg: $('#msg').val()}
@@ -35,12 +34,9 @@
                 socket.emit('join',  name);
                 // socket.emit('requestRide', str);
             }
-
             socket.emit('userOnline', JSON.stringify({userId: "1234", city: "Kumasi"}));
 
         });
-
-
 
         socket.on('userJoined', (userName) => {
             // console.log("Welcome to the chat " + userName);
@@ -57,7 +53,6 @@
         socket.on('private', (msg) => {
             console.log("Private msg is " + msg);
         });
-        
     </script>
 </body>
 </html>

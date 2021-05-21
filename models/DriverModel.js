@@ -53,8 +53,8 @@ const schema = new mongoose.Schema({
     },
 
 
-    isActive: {
-        desc: "is Active",
+    carType: {
+        desc: "Type of car", // van, long vehicle, 
         trim: true,
         type: String,
         required: true,
@@ -73,6 +73,14 @@ const schema = new mongoose.Schema({
     },
     profit: {
         desc: "Driver total profit",
+        trim: true,
+        type: String,
+        required: true,
+    },
+
+
+    isActive: {
+        desc: "is Active",
         trim: true,
         type: String,
         required: true,
