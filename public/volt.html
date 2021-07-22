@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Asabre</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="../css/extra.css">
+
+<!-- <link rel="stylesheet" href="../css/font.css">
+<link rel="stylesheet" href="../css/Raleway.css">
+<link rel="stylesheet" href="../css/w3.css"> -->
+
+<style>
+  
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+.w3-quarter img{margin-bottom: -6px; cursor: pointer}
+.w3-quarter img:hover{opacity: 0.6; transition: 0.3s}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+
+
+<body class="">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-bar-block w3-black w3-animate-right w3-top w3-text-light-grey w3-large" style="z-index:3;width:250px;font-weight:bold;display:none;right:0;" id="mySidebar">
+  <a href="javascript:void()" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-32">CLOSE</a>
+  <a href="./index.html" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">HOME</a>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-white w3-xlarge w3-padding-16">
+  <a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content" style="max-width:1600px;margin-top:83px">
+
+
+  <!-- About section -->
+  <div class="w3-container w3-center w3-padding-32" id="about">
+    <h3 class="w3-padding">Giving Back Time</h3>
+    <img src="/images/my_kids.jpg" style="width: 70%;" alt="FIRST">
+    <hr class="w3-border-grey">
+
+    <div class="w3-content w3-justify" style="max-width:600px">
+
+      <p class="w3-content  " style="max-width:600px">
+        There is nothing like giving back to the society that made you.
+        Taking some quality time to visit children at the basic schools
+         in my community is one of my hobbies</p>
+  
+      <p> Most students struggle in the STEM subjects especially with mathematics.
+       I therefore decided to routinely go to neigbouring primary schools and engage with them. 
+    </p>
+
+      <h4>Mathematics made easy</h4>
+      <!-- <img src="/images/volt_maths.jpg" style="width: 100%;" alt="FIRST"> -->
+      <img src="/images/fun_math.jpg" style="width: 100%;" alt="FIRST">
+      <hr class="w3-border-grey">
+      <p> Most of the time, I break down complex mathematical topics for their comprehension. </p>
+ 
+     <h4>Building fun projects</h4>
+     <img src="/images/fun_pic.jpg" style="width: 100%;" alt="FIRST">
+     <hr class="w3-border-grey">
+     <p> On other days we build projects together with available materials and sometimes 
+      I give them leadership talks on how to be a responsible person in the community.
+       </p>
+
+    </div>
+  </div>
+
+
+
+<!-- 
+  <footer class="w3-container w3-padding-32 w3-grey">
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <h3>INFO</h3>
+        <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum,.</p>
+      </div>
+
+      <div class="w3-third">
+        <h3>BLOG POSTS</h3>
+        <ul class="w3-ul">
+          <li class="w3-padding-16 w3-hover-black">
+            <img src="/w3images/workshop.jpg" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">Lorem</span><br>
+            <span>Sed mattis nunc</span>
+          </li>
+          <li class="w3-padding-16 w3-hover-black">
+            <img src="/w3images/gondol.jpg" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">Ipsum</span><br>
+            <span>Praes tinci sed</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="w3-third">
+        <h3>POPULAR TAGS</h3>
+        <p>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Sports</span>
+           <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Games</span>
+        </p>
+      </div>
+    </div>
+  </footer>  -->
+
+  <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div>
+
+<!-- End page content -->
+</div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+</script>
+
+<!-- // image slider -->
+
+
+<script>
+  var slideIndex = 0;
+  showSlides();
+  
+  function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}    
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    setTimeout(showSlides, 2000); // Change image every 2 seconds
+  }
+  </script>
+
+
+</body>
+</html>

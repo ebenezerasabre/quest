@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Asabre Ebenezer</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="../css/extra.css">
+
+<!-- <link rel="stylesheet" href="../css/font.css">
+<link rel="stylesheet" href="../css/Raleway.css">
+<link rel="stylesheet" href="../css/w3.css"> -->
+
+<style>
+  
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+.w3-quarter img{margin-bottom: -6px; cursor: pointer}
+.w3-quarter img:hover{opacity: 0.6; transition: 0.3s}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+</style>
+
+
+
+<!-- <head>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head> -->
+
+<body class="w3-padding">
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-bar-block w3-black w3-animate-right w3-top w3-text-light-grey w3-large" style="z-index:3;width:250px;font-weight:bold;display:none;right:0;" id="mySidebar">
+  <a href="javascript:void()" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-32">CLOSE</a>
+  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">PORTFOLIO</a>
+  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">ABOUT ME</a>
+  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">CONTACT</a>
+</nav>
+
+<!-- Top menu on small screens -->
+<header class="w3-container w3-top w3-white w3-xlarge w3-padding-16">
+  <!-- <span class="w3-left w3-padding">Ebenezer Asabre</span>
+  <span class="w3-left w3-padding">{{name}}</span> -->
+  <a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a>
+</header>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main w3-content" style="max-width:1600px;margin-top:83px">
+  <!-- <div> <div>Above fading</div></div> -->
+
+ 
+<!-- //fading project -->
+
+
+
+<!-- <div class="">
+  <div class="" >
+
+
+    <h2>Automatic Slideshow</h2>
+    <p>Change image every 2 seconds:</p>
+    
+    <div class="slideshow-container">
+    
+    <div class="mySlides fade">
+      <div class="numbertext">1 / 3</div>
+      <img src="./images/shot.png" style="width:70%" class="center">
+      <div class="text">Caption One</div>
+    </div>
+    
+    <div class="mySlides fade">
+      <div class="numbertext">2 / 3</div>
+      <img src="./images/trans.png" style="width:70%" class="center">
+      <div class="text">Caption Two</div>
+    </div>
+    
+    <div class="mySlides fade">
+      <div class="numbertext">3 / 3</div>
+      <img src="./images/transmitter.png" style="width:70%" class="center">
+      <div class="text">Caption Three</div>
+    </div>
+    
+    </div>
+    <br>
+    
+    <div style="text-align:center">
+      <span class="dot"></span> 
+      <span class="dot"></span> 
+      <span class="dot"></span> 
+    </div>
+    
+
+
+  </div>
+</div> -->
+
+
+
+
+  <div class="w3-container">
+    <h4 style="font-family:Arial, Helvetica, sans-serif">PORTFOLIO</h4>
+  </div>
+
+  <!-- Photo grid -->
+  <div class="w3-row w3-left">
+
+    <div class="w3-third"style="padding: 16px;">
+      <a href="./diplom.html">
+        <img src="/images/first_dir.jpg" style="width: 100%;" alt="FIRST">
+    </a>
+  </div>
+
+    <div class="w3-third"style="padding: 16px;">
+        <a href="./trans.html">
+          <img src="/images/tr1.png" style="width: 100%;" alt="FIRST">
+      </a>
+    </div>
+
+   <div class="w3-third" style="padding: 16px;">
+      <a href="./drone.html">
+          <img src="/images/dr1.png" style="width: 100%;" alt="Canoeing again">
+      </a>
+    </div>
+
+    <div class="w3-third" style="padding: 16px;">
+        <a href="./rec.html">
+          <img src="/images/rc1.png" style="width: 100%;" onclick="onClick(this)" alt="Canoeing again">
+      </a>
+    </div>
+
+    <div class="w3-third" style="padding: 16px;">
+      <a href="./volt.html">
+        <img src="/images/my_kids.jpg" style="width: 100%;" onclick="onClick(this)" alt="Canoeing again">
+     </a>
+  </div>
+
+  <div class="w3-third" style="padding: 16px;">
+    <a href="./volt.html">
+      <img src="/images/prime.png" style="width: 100%;" onclick="onClick(this)" alt="Canoeing again">
+   </a>
+
+  </div>
+
+  <!-- <div class="w3-row">
+      <div class="w3-third" style="padding: 16px;">
+        <a href="./volt.html">
+          <img src="/images/my_kids.jpg" style="width: 100%;" onclick="onClick(this)" alt="Canoeing again">
+       </a>
+    </div>
+
+    <div class="w3-third" style="padding: 16px;">
+      <a href="./volt.html">
+        <img src="/images/prime.png" style="width: 100%;" onclick="onClick(this)" alt="Canoeing again">
+     </a>
+  </div>
+
+
+
+</div> -->
+
+
+
+  <!-- Modal for full size images on click-->
+  <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
+    <span class="w3-button w3-black w3-xlarge w3-display-topright">×</span>
+    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+      <img id="img01" class="w3-image">
+      <p id="caption"></p>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- About section -->
+  <div class="w3-row w3-container w3-center w3-padding-32" id="about">
+    <div class="w3-half">
+   
+      <img src="./images/about_me.png" alt="Me" class="w3-image w3-padding-32" width="413" height="531">
+    
+    </div>
+
+    <div class="w3-half">
+      <div class="w3-content w3-justify" style="max-width:600px">
+        <h3 class="w3-sans-serif">Asabre Ebenezer</h3>
+        <p class="w3-sans-serif w3-dark-grey w3-padding">BEng. Electrical and Electronics Engineering </p>
+        <p class="w3-padding">I am a multidisciplinary innovator with a passion for human-centered product design.
+          My skills and interest are in Embedded Software, Product Design Engineereing and Algorithms</p>
+          <p>
+            <a class="w3-margin " href="./resume.html">
+              <button class="w3-button w3-light-grey w3-padding-large w3-margin-top w3-margin-bottom w3-hover-black">View Resume</button>
+            </a>
+          </p>
+      
+
+      </div>
+    </div>
+
+    <!-- <h4><b>About Me</b></h4> -->
+
+  </div>
+
+
+
+
+  <!-- About section -->
+  <!-- <div class="w3-container w3-center w3-padding-32" id="about">
+    <div class="w3-content w3-justify" style="max-width:600px">
+
+      <hr class="w3-opacity">
+      <h4 class="w3-padding-16">Technical Skills</h4>
+      <p class="w3-wide">Photography</p>
+      <div class="w3-white">
+        <div class="w3-container w3-padding-small w3-center w3-grey" style="width:95%">95%</div>
+      </div>
+      <p class="w3-wide">Web Design</p>
+      <div class="w3-white">
+        <div class="w3-container w3-padding-small w3-center w3-grey" style="width:85%">85%</div>
+      </div>
+      <p class="w3-wide">Photoshop</p>
+      <div class="w3-white">
+        <div class="w3-container w3-padding-small w3-center w3-grey" style="width:80%">80%</div>
+      </div>
+  
+ 
+   
+    </div>
+  </div> -->
+
+
+
+  <!-- Footer -->
+  <!-- <footer class="w3-container w3-padding-32 w3-grey">
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <h3>INFO</h3>
+        <p>Praesent tincidunt sed tellus ut rutrum. Sed vitae justo condimentum, porta lectus vitae, ultricies congue gravida diam non fringilla.</p>
+      </div>
+
+      <div class="w3-third">
+        <h3>BLOG POSTS</h3>
+        <ul class="w3-ul">
+          <li class="w3-padding-16 w3-hover-black">
+            <img src="/w3images/workshop.jpg" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">Lorem</span><br>
+            <span>Sed mattis nunc</span>
+          </li>
+          <li class="w3-padding-16 w3-hover-black">
+            <img src="/w3images/gondol.jpg" class="w3-left w3-margin-right" style="width:50px">
+            <span class="w3-large">Ipsum</span><br>
+            <span>Praes tinci sed</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="w3-third">
+        <h3>POPULAR TAGS</h3>
+        <p>
+          <span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">London</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">IKEA</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">NORWAY</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">DIY</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Baby</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Family</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">News</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Clothing</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Shopping</span>
+          <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Sports</span> <span class="w3-tag w3-dark-grey w3-small w3-margin-bottom">Games</span>
+       
+        </p>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div>
+
+<!-- End page content -->
+</div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+</script>
+
+<!-- // image slider -->
+
+
+<script>
+  var slideIndex = 0;
+  showSlides();
+  
+  function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}    
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    setTimeout(showSlides, 2000); // Change image every 2 seconds
+  }
+  </script>
+
+
+</body>
+</html>

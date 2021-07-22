@@ -3,7 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
-const UserModel = require('./models/UserModel');
+
 const HistoryModel = require('./models/HistoyModel');
 
 // const HistoryController = require('./controllers/HistoryController');
@@ -18,6 +18,7 @@ http.listen(3000, ()=>{ console.log('ewquest node server running'); });
 var AllDrivers = [];
 
 
+
 /**
  * MiddleWares
  */
@@ -26,10 +27,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
+//static middleware
+// for images
+// this opens the index.html file as the home page
+// from root file
+app.use(express.static(__dirname+'/public'))
+
+
 /**
  * ROUTES
  */
-app.get('/', (req, res) => { res.status(200).send('Done');});
+// app.get('/', (req, res) => { res.status(200).send('Done');});
 app.get('/two', (req, res) => {res.status(200).send('Done second');});
 app.get('/file', (req,res)=>{ res.sendFile(__dirname + '/static/index.html');});
 app.get('/try', (req,res)=>{ res.sendFile(__dirname + '/static/try.html');});
@@ -52,8 +60,11 @@ app.use("/support", require('./routes/SupportRoutes'));
 app.use("/ride", require('./routes/RideRequestRoutes'));
 
 
+var name = "The big name";
+
 // portfolio routing
-app.use('/asabre/projects', (req,res)=>{ res.sendFile(__dirname + '/portfolio/index.html');});
+// app.use('/asabre/projects', (req,res)=>{ res.sendFile(__dirname + '/portfolio/index.html');});
+// app.use('/', (req,res)=>{ res.sendFile(__dirname + '/portfolio/index.html',{name:name})});
 
 
 
@@ -63,23 +74,28 @@ app.use('/asabre/projects', (req,res)=>{ res.sendFile(__dirname + '/portfolio/in
  */
 var usersOnline = [];
 
+
 /** 
  * Drivers online at the moment
  */
 var driversOnline = [];
+
 
 /**
  * socketIds may change with network flactuatioons
  * identify users with ids
  */
 
+
  var updatedSockets = [];
+
 
 /** 
  * List of pending ride requests
  * If request is accepted remove from list
  */
 var requestQueue = [];
+
 
 /**
  * Accepted ride requests
