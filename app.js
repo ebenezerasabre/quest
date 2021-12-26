@@ -190,7 +190,7 @@ function findUsers(){
 
     function userAndDriverUpdate(reqDetails, status) {
         console.log('user socket ' + updatedSockets[reqDetails.userId]);
-        console.log('driver socket ' + updatedSockets[reqDetails.userId]);
+        console.log('driver socket ' + updatedSockets[reqDetails.driverId]);
         io.to(updatedSockets[reqDetails.userId]).emit(status, JSON.stringify(reqDetails));
         io.to(updatedSockets[reqDetails.driverId]).emit(status, JSON.stringify(reqDetails));
 
