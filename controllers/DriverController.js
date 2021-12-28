@@ -83,21 +83,27 @@ exports.createDriver = (req, res) => {
         return res.status(400)
         .send({message: "Required field can't be empty"});
     }
+    
     //create
     const Driver = new DriverModel({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         phoneNumber: req.body.phoneNumber,
         password: req.body.password,
+
         email: req.body.email,
         userType: "driver",
         finishedRides: "0",
         rating: "3",
-        isActive: "true",
+
+        rideType: req.body.rideType,
         carDescription: req.body.carDescription,
         carNumber: req.body.carNumber,
         profit: "0.0",
+
+        isActive: "true",
     });
+
     //save
     Driver.save().then((driver) => {
         if(driver){

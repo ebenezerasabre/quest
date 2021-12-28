@@ -53,8 +53,8 @@ const schema = new mongoose.Schema({
     },
 
 
-    carType: {
-        desc: "Type of car", // van, long vehicle, 
+    rideType: {
+        desc: "Type of ride", // van, long vehicle, 
         trim: true,
         type: String,
         required: true,

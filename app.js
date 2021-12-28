@@ -310,6 +310,7 @@ function findUsers(){
         return requestDetail;
     }
 
+    
     function sortedProximityDrivers(reqDetails){
 
     var drivers = [];
@@ -321,10 +322,12 @@ function findUsers(){
     }
 
     drivers = driversOnline.filter(function(obj){
-    /**
+   
+        /**
     * Driver selection criteria
     * Same city and rideType, not busy, has not rejected request
     */
+
     if(reqDetails.city === obj.city && 
         !busyDrivers.includes(obj.socketId) && 
         reqDetails.rideType === obj.rideType && 
@@ -344,10 +347,9 @@ function findUsers(){
     }
     console.log('Drivers online length ' + driversOnline.length);
 
-
     return drivers.sort((a, b) => a.proximity - b.proximity);
-     
    }
+
 
     function showBusyDrivers(){
         console.log('Showiiiingngngn');

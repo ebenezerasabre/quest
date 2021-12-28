@@ -209,10 +209,6 @@ const RideRequestModel = require('../models/RideRequestModel');
 //  body.createdAt
 
  exports.updateRideRequestInside = (body) => {
-
-    // RideRequestModel.find( { userId: { $eq: body.userId }, createdAt: body.createdAt } )
-
-    // RideRequestModel.find( { userId: body.userId , createdAt: body.createdAt } )
     RideRequestModel.find( { createdAt: {$eq: body.createdAt}  } )
     .then((ride) => {
         if(ride){
