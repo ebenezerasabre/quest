@@ -54,13 +54,13 @@ const schema = new mongoose.Schema({
 
 
     rideType: {
-        desc: "Type of ride", // van, long vehicle, 
+        desc: "Type of ride", // van, long vehicle, truck 
         trim: true,
         type: String,
         required: true,
     },
     carDescription: {
-        desc: "Driver car description",
+        desc: "Car description",
         trim: true,
         type: String,
         required: true,
@@ -71,7 +71,7 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    profit: {
+    credit: { // what driver owes the company
         desc: "Driver total profit",
         trim: true,
         type: String,
@@ -79,11 +79,35 @@ const schema = new mongoose.Schema({
     },
 
 
-    isActive: {
+    isActive: {  // true if active, false if blocked
         desc: "is Active",
         trim: true,
         type: String,
+    },
+    companyName: {
+        desc: "company name",
+        trim: true,
+        type: String,
+    },
+    companyId: {
+        desc: "company id",
+        trim: true,
+        type: String,
+    },
+    referalLink: { 
+        // first and last 2 letters of firstname and lastname
+        // plus length of your firstname plus lastname
+        desc: "referal link",
+        trim: true,
+        type: String,
         required: true,
+    },
+
+
+    referedlLink: { 
+        desc: "referal link",
+        trim: true,
+        type: String,
     },
 },
 {

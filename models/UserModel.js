@@ -52,23 +52,30 @@ const schema = new mongoose.Schema({
         required: true,
     },
 
-    homeLocation: {
-        desc: "user work location",
-        trim: true,
-        type: String,
-    },
-    workLocation: {
-        desc: "user work location",
-        trim: true,
-        type: String,
-    },
-    isActive: {
+  
+    isActive: { // true if active, false if blocked
         desc: "is Active",
         trim: true,
         type: String,
+    },
+    referalLink: { 
+        // first and last 2 letters of firstname and lastname
+        // plus length of your firstname plus lastname
+        desc: "referal link",
+        trim: true,
+        type: String,
         required: true,
-        
-    }
+    },
+    referedlLink: { 
+        desc: "referal link",
+        trim: true,
+        type: String,
+    },
+    discount: { 
+        desc: "Discount to user",
+        trim: true,
+        type: String,
+    },
 },
 {
     strict: true,
