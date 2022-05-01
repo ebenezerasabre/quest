@@ -75,7 +75,6 @@ const schema = new mongoose.Schema({
         desc: "Driver total profit",
         trim: true,
         type: String,
-        required: true,
     },
 
 
@@ -100,7 +99,6 @@ const schema = new mongoose.Schema({
         desc: "referal link",
         trim: true,
         type: String,
-        required: true,
     },
 
 

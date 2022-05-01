@@ -3,28 +3,22 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
-
-const HistoryModel = require('./models/HistoyModel');
-
-// const HistoryController = require('./controllers/HistoryController');
-// const RideRequestController = require('./controllers/RideRequestController');
-const RideRequestModel = require('./models/RideRequestModel');
-const { loadavg } = require('os');
-
-
-
 http.listen(3000, ()=>{ console.log('ewquest node server running'); });
 
-var AllDrivers = [];
+/** MiddleWares */
+
+ app.use(bodyParser.json());
+ app.use(bodyParser.urlencoded({extended: false}));
+ 
+
+const UserModel = require('./models/UserModel');
+const DriverModel = require('./models/DriverModel');
+const RideRequestModel = require('./models/RideRequestModel');
+const BookingModel = require('./models/BookingModel');
 
 
 
-/**
- * MiddleWares
- */
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
 
 
 //static middleware
@@ -58,6 +52,9 @@ app.use("/review", require('./routes/ReviewRoutes'));
 app.use("/support", require('./routes/SupportRoutes'));
 // rideRequest routes
 app.use("/ride", require('./routes/RideRequestRoutes'));
+// Booking routes
+app.use("/book", require('./routes/BookingRoutes'));
+
 
 
 var name = "The big name";
@@ -69,15 +66,10 @@ var name = "The big name";
 
 
 
-/** 
- * Users online at the moment 
- */
+/** * Users online at the moment */
 var usersOnline = [];
 
-
-/** 
- * Drivers online at the moment
- */
+/** Drivers online at the moment */
 var driversOnline = [];
 
 
@@ -85,8 +77,6 @@ var driversOnline = [];
  * socketIds may change with network flactuatioons
  * identify users with ids
  */
-
-
  var updatedSockets = [];
 
 
@@ -116,6 +106,7 @@ var busyDrivers = [];
 
 
 
+
 /**
  * SOCKETS
  */
@@ -130,54 +121,26 @@ io.on('connection', (socket) => {
 
     io.to(socket.id).emit('socketId', socket.id);
 
-    // findUsers();
-
-// starts
-
-
-function findUsers(){
-    UserModel.find()
-    .then((users) => {
-       if(users){
-           io.to(socket.id).emit('findUser', JSON.stringify(users));
-           console.log(users);
-       }
-       return {message: "Users not found"};
-    })
-    .catch((err) => {
-        return {message: err.message};
-    });
-
-    
-}
-
-
-    // socket.on('insideHistory', (str) => {
-    //     console.log("Recieving insideHistory str : " + str);
-    //     // HistoryController.insideCreateHistory(str);
-    // });
-
-
-// ends
-
-
 
     socket.on('disconnect', () => {
         userOffline(socket.id);
         console.log('Socket id disconnected ' + socket.id);
     });
 
+    // when a user connects to API
     socket.on('join', (userName) => {
         console.log("user joined " + userName);
         io.emit('userJoined', userName);
     });
 
+    // When an android client connets to API
     socket.on('android', (brand) => {
         console.log("Android brand is " + brand);
         io.emit('androidHere', brand);
     });
 
  
+
   
     // when driver or user cancels request
     socket.on('cancel', (requestDetails) => {
@@ -313,41 +276,41 @@ function findUsers(){
     
     function sortedProximityDrivers(reqDetails){
 
-    var drivers = [];
-    var rejects = [];
+        var drivers = [];
+        var rejects = [];
 
-    rejects = reqDetails.driverReject.split(',');
-    for(var x=0;x<rejects.length;x++){
-        removeFromBusyDrivers(rejects[x]);
-    }
+        rejects = reqDetails.driverReject.split(',');
+        for(var x=0;x<rejects.length;x++){
+            removeFromBusyDrivers(rejects[x]);
+        }
 
-    drivers = driversOnline.filter(function(obj){
-   
+        drivers = driversOnline.filter(function(obj){
+    
         /**
-    * Driver selection criteria
-    * Same city and rideType, not busy, has not rejected request
-    */
+        * Driver selection criteria
+        * Same city and rideType, not busy, has not rejected request
+        */
 
-    if(reqDetails.city === obj.city && 
-        !busyDrivers.includes(obj.socketId) && 
-        reqDetails.rideType === obj.rideType && 
-        !rejects.includes(updatedSockets[obj.driverId])
-        ){
-        // driver proximity to user
-        var proximity = distanceBtwn(reqDetails.lat, obj.lat, reqDetails.lng, obj.lng);
+        if(reqDetails.city === obj.city && 
+            !busyDrivers.includes(obj.socketId) && 
+            reqDetails.rideType === obj.rideType && 
+            !rejects.includes(updatedSockets[obj.driverId])
+            ){
+            // driver proximity to user
+            var proximity = distanceBtwn(reqDetails.lat, obj.lat, reqDetails.lng, obj.lng);
 
-        obj.proximity = proximity.toString(); 
-        return obj;
-    }
-        else { return; }
-    });
-    console.log('The drivers');
-    for(var c=0;c<drivers.length;c++){
-        console.log(drivers[c]);
-    }
-    console.log('Drivers online length ' + driversOnline.length);
+            obj.proximity = proximity.toString(); 
+            return obj;
+        }
+            else { return; }
+        });
+        console.log('The drivers');
+        for(var c=0;c<drivers.length;c++){
+            console.log(drivers[c]);
+        }
+        console.log('Drivers online length ' + driversOnline.length);
 
-    return drivers.sort((a, b) => a.proximity - b.proximity);
+        return drivers.sort((a, b) => a.proximity - b.proximity);
    }
 
 
@@ -593,7 +556,268 @@ function findUsers(){
         });
     }
 
+
+
+/**
+ * Methods for the Administrator
+ * *****************************
+ */
+
+/**
+ * // User[0], Driver[1], Rides[2] and Booking[3] data,
+ *  would be store as objects in this array
+ *        io.emit('usrFnd', JSON.stringify(users));
+ */
+ var adminDatabase = [];
+ var adminCountDB = [];
+
+// tracked what was clicked in elmain.html
+//users, drivers, rides or bookings
+var dataState = "";
+
+
+
+ function emitDataToAdmin(type, obj){
+    io.emit(type, JSON.stringify(obj));
+ }
+
+
+ function findUsers(){
+    console.log("findUsers() called");
+    UserModel.find()
+    .then((users) => {
+       if(users){
+            dataState = "users";
+            adminDatabase[0] = users;
+            emitDataToAdmin('usrFnd', users);
+       }
+       return {message: "Users not found"};
+    })
+    .catch((err) => {
+        return {message: err.message};
+    });
+}
+
+
+function findDrivers(){
+    console.log("findDrivers() called");
+    DriverModel.find()
+    .then((drivers) => {
+       if(drivers){
+            dataState = "drivers";
+            adminDatabase[1] = drivers;
+            emitDataToAdmin('drvFnd', drivers);
+       }
+       return {message: "Drivers not found"};
+    })
+    .catch((err) => {
+        return {message: err.message};
+    });
+}
+
+function findRides(){
+    console.log("findRides() called");
+    RideRequestModel.find()
+    .then((rides) => {
+       if(rides){
+            dataState = "rides";
+            adminDatabase[2] = rides;
+            emitDataToAdmin('rdFnd', rides); 
+       }
+       return {message: "Ride requests not found"};
+    })
+    .catch((err) => {
+        return {message: err.message};
+    });
+}
+
+function findBookings(){
+    console.log("findBookings() called");
+    BookingModel.find()
+    .then((books) => {
+       if(books){
+            dataState = "bookings";
+            adminDatabase[3] = books;
+            emitDataToAdmin('bkngFnd', books);
+       }
+       return {message: "Bookings not found"};
+    })
+    .catch((err) => {
+        return {message: err.message};
+    });
+}
+
+
+
+
+/**
+ * Receiving signal from elmain.html to retrieve
+ *  users, drivers, rides, bookings from the database
+ * 
+ */
+ socket.on('fndUsr', (all) => {
+    console.log("Looking for users " + all);
+    // if data is in adminDatabase get it
+    if(adminDatabase[0]){
+        console.log("Users : From adminDatabse");
+        emitDataToAdmin('usrFnd', adminDatabase[0]);
+        return;
+    }
+    findUsers();
+});
+
+socket.on('fndDrv', (all) => {
+    console.log("Looking for drivers " + all);
+     if(adminDatabase[1]){
+        console.log("Drivers : From adminDatabse");
+        emitDataToAdmin('drvFnd', adminDatabase[1]);
+        return;
+    }
+    findDrivers();
+});
+
+socket.on('fndRd', (all) => {
+    console.log("Looking for Ride requests " + all);
+     if(adminDatabase[2]){
+        console.log("Drivers: From adminDatabse");
+        emitDataToAdmin('rdFnd', adminDatabase[2]);
+        return;
+    }
+    findRides();
+});
+
+socket.on('fndBkng', (all) => {
+    console.log("Looking for bookings " + all);
+    if(adminDatabase[3]){
+        console.log("Bookings: From adminDatabse");
+        emitDataToAdmin('bkngFnd', adminDatabase[3]);
+        return;
+    }
+    findBookings();
+});
+
+
+
+// COUNTING
+
+/**
+ * Receiving signal from elmain.html to count
+ *  users, drivers, rides, bookings from the database
+ * This signal is automatically sent from elmain.html
+ * when the document is ready
+ */
+
+
+socket.on('cntUsr', (all) => {
+    console.log("Counting users " + all);
+    if(adminCountDB[0] && adminCountDB[0] > 1){
+        console.log("From adminCountDB");
+        emitDataToAdmin('usrCnt', adminCountDB[0]);
+        return;
+    }
+    countUser();
+});
+
+socket.on('cntDrv', (all) => {
+    console.log("Counting drivers " + all);
+    if(adminCountDB[1] && adminCountDB[1] > 1){
+        console.log("From adminCountDB");
+        emitDataToAdmin('drvCnt', adminCountDB[1]);
+        return;
+    }
+    countDriver();
+});
+
+socket.on('cntRd', (all) => {
+    console.log("Counting rides " + all);
+    if(adminCountDB[2] && adminCountDB[2] > 1){
+        console.log("From adminCountDB");
+        emitDataToAdmin('rdCnt', adminCountDB[2]);
+        return;
+    }
+    countRide();
+});
+
+socket.on('cntBkng', (all) => {
+    console.log("Counting bookings " + all);
+    if(adminCountDB[3] && adminCountDB[3] > 1){
+        console.log("From adminCountDB");
+        emitDataToAdmin('bkngCnt', adminCountDB[3]);
+        return;
+    }
+    countBooking();
+});
+
+
+
+// if a new user is created update array
+
+function countUser(){
+    UserModel.find()
+    .countDocuments()
+    .then((total) => {
+         if(total){
+             console.log("countUser() app.js = " + total);
+             adminCountDB[0] = total;
+             emitDataToAdmin('usrCnt', total);
+         } 
+     })
+     .catch((err) => {
+        return 0;
+     });
+};
+
+function countDriver(){
+    DriverModel.find()
+    .countDocuments()
+    .then((total) => {
+         if(total){
+             console.log("countDriver() app.js = " + total);
+             adminCountDB[0] = total;
+             emitDataToAdmin('drvCnt', total);
+         } 
+     })
+     .catch((err) => {
+        return 0;
+     });
+};
+
+
+function countRide(){
+    RideRequestModel.find()
+    .countDocuments()
+    .then((total) => {
+         if(total){
+             console.log("countRide() app.js = " + total);
+             adminCountDB[2] = total;
+             emitDataToAdmin('rdCnt', total);
+         } 
+     })
+     .catch((err) => {
+        return 0;
+     });
+};
+
+function countBooking(){
+    BookingModel.find()
+    .countDocuments()
+    .then((total) => {
+         if(total){
+             console.log("counBooking() app.js = " + total);
+             adminCountDB[3] = total;
+             emitDataToAdmin('bkngCnt', total);
+         } 
+     })
+     .catch((err) => {
+        return 0;
+     });
+};
+
+
+
+
     
+// setInterval(myTotal, 1000);
 
 });
 

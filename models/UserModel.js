@@ -8,7 +8,7 @@ const schema = new mongoose.Schema({
     },
     lastName: {
         desc: "user lastname",
-        trim: true,
+        trim: true ,
         type: String,
         required: true,
     },

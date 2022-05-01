@@ -90,18 +90,23 @@ exports.createDriver = (req, res) => {
         lastName: req.body.lastName,
         phoneNumber: req.body.phoneNumber,
         password: req.body.password,
-
         email: req.body.email,
+
         userType: "driver",
         finishedRides: "0",
         rating: "3",
-
         rideType: req.body.rideType,
         carDescription: req.body.carDescription,
-        carNumber: req.body.carNumber,
-        profit: "0.0",
 
+        carNumber: req.body.carNumber,
+        credit: "0.0",
         isActive: "true",
+        companyName: "",
+        companyId: "",
+
+        referalLink: "",
+        referedLink: "",
+
     });
 
     //save
