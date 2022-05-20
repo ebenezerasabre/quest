@@ -85,14 +85,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <header class="w3-container w3-teal"> 
           <span onclick="document.getElementById('id01').style.display='none'" 
           class="w3-button w3-display-topright">&times;</span>
-          <h2>Modal Header</h2>
+          <h2>User Details</h2>
         </header>
-        <div class="w3-container">
+        <div class="w3-container" id="modalContent">
           <p>Some text..</p>
           <p>Some text..</p>
         </div>
         <footer class="w3-container w3-teal">
-          <p>Modal Footer</p>
+          <!-- <p>Modal Footer</p> -->
         </footer>
       </div>
     </div>
@@ -131,57 +131,82 @@ $(document).ready(function(){
   socket.emit('fndUsr', 'All');
 
 /**
- * Listen for from app.JS  admin data
+ * Listen for signal from app.JS  admin data
  */
  socket.on("usrFnd", (users) => {
-    console.log("The users found elone.html " + users);
-    var allUsers = JSON.parse(users);
-    console.log(allUsers);
+      console.log("The users found elone.html " + users);
+      var allUsers = JSON.parse(users);
+      console.log(allUsers);
 
-    for(var x = 0; x < allUsers.length; x++){
-      var Name = allUsers[x].firstName;
-      $('#listUl').append(`
-          <li class="w3-padding-16">
-          <div class="w3-container">
-          <h4> ${allUsers[x].firstName} ${allUsers[x].lastName}   <span class="w3-opacity w3-medium">${allUsers[x].createdAt}</span></h4>
-          <p>${allUsers[x]._id}</p>
-          <p>${allUsers[x].phoneNumber}.</p>
-    
-             <span  onclick="userDetails('${
-              allUsers[x].firstName + "," + 
-              allUsers[x].lastName + "," + 
-              allUsers[x].email + "," + 
-              allUsers[x].phoneNumber + "," + 
-              allUsers[x].rating + "," + 
-              allUsers[x].isActive + "," + 
-              allUsers[x].finishedRides + "," + 
-              allUsers[x].createdAt
-            }')"
-             class="w3-button w3-right w3-blue w3-round">Details</span>
-          </div>
-          </li>
-      `);
-      }
+      for(var x = 0; x < allUsers.length; x++){
+        var Name = allUsers[x].firstName;
+        $('#listUl').append(`
+            <li class="w3-padding-16">
+            <div class="w3-container">
+            <h4> ${allUsers[x].firstName} ${allUsers[x].lastName}   <span class="w3-opacity w3-medium">${allUsers[x].createdAt}</span></h4>
+            <p>${allUsers[x]._id}</p>
+            <p>${allUsers[x].phoneNumber}.</p>
+      
+              <span  onclick="userDetails('${
+                allUsers[x]._id + "," +
+                allUsers[x].firstName + "," + 
+                allUsers[x].lastName + "," + 
+                allUsers[x].phoneNumber + "," + 
+                allUsers[x].email + "," + 
+                allUsers[x].userType + "," + 
+                allUsers[x].finishedRides + "," + 
+                allUsers[x].rating + "," + 
+                allUsers[x].homeLocation + "," + 
+                allUsers[x].workLocation + "," + 
+                allUsers[x].isActive + "," + 
+                allUsers[x].createdAt+ "," + 
+                allUsers[x].updatedAt}')"
+              class="w3-button w3-right w3-blue w3-round">Details</span>
+            </div>
+            </li>
+        `);
+        }
   });
-
 
 
 });
 
-// Net -> Let user data show in the modal
-// works
-function userDetails(userClicked){
-  // var obj = JSON.parse(userClicked);
-  document.getElementById('id01').style.display='block';
-  const user = userClicked.split(',');
-  console.log('The user name ' + user[0]);
-  // var user = userClicked ;
+  // user properties
+  const userKeys = [
+        "_id",
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "email",
+        "userType",
+        "finishedRides",
+        "rating",
+        "homeLocation",
+        "workLocation",
+        "isActive",
+        "createdAt",
+        "updatedAt"
+    ];
 
 
+  // Net -> Let user data show in the modal
+  // works
+  function userDetails(userClicked){
+    // var obj = JSON.parse(userClicked);
+      document.getElementById('id01').style.display='block';
+      const user = userClicked.split(',');
+      console.log('The user name ' + user);
+      // var user = userClicked ;
 
+      document.getElementById("modalContent").innerText = "";
+    for(var x = 0; x < user.length; x++){
+        const node = document.createElement("p");
+        const textnode = document.createTextNode(`${userKeys[x]} : ${user[x]}`);
+        node.appendChild(textnode);
+        document.getElementById("modalContent").appendChild(node);
+    }
 
-
-}
+  }
 
 
 

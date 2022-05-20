@@ -32,13 +32,11 @@ const schema = new mongoose.Schema({
         desc: "Driver email",
         trim: true,
         type: String,
-        required: true,
     },
     userType: {
         desc: "user roles", // user,driver,admin
         trim: true,
         type: String,
-        required: true,
     },
     finishedRides: {
         desc: "Driver finished rides",
@@ -49,7 +47,6 @@ const schema = new mongoose.Schema({
         desc: "Driver rating max 5",
         trim: true,
         type: String,
-        required: true,
     },
 
 

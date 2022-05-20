@@ -29,7 +29,20 @@ app.use(express.static(__dirname+'/public'))
 
 
 /**
- * ROUTES
+ * ROUTEES FOR BuyOut App
+ */
+
+app.get("/buy", require('./routes/BuyAboutUsRoutes'));
+
+
+
+
+
+
+
+
+/**
+ * ROUTES FOR VERGOES APP
  */
 // app.get('/', (req, res) => { res.status(200).send('Done');});
 app.get('/two', (req, res) => {res.status(200).send('Done second');});
@@ -54,6 +67,25 @@ app.use("/support", require('./routes/SupportRoutes'));
 app.use("/ride", require('./routes/RideRequestRoutes'));
 // Booking routes
 app.use("/book", require('./routes/BookingRoutes'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

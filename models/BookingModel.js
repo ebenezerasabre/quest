@@ -6,8 +6,8 @@ const schema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    carType: {
-        desc: "The car customer wants to book",
+    rideType: {
+        desc: "The ride customer wants to book",
         trim: true,
         type: String,
         required: true,
@@ -42,6 +42,7 @@ const schema = new mongoose.Schema({
         desc: "booking state",
         trim: true,
         type: String,
+        required: false,
     },
     driverId: {
         desc: "Drivers id",

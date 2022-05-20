@@ -37,7 +37,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <div class="w3-col s8 w3-bar">
       <span>Welcome, <strong>Mike</strong></span><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-driver"></i></a>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
     </div>
   </div>
@@ -47,9 +47,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   </div>
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>&nbsp; Overview</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-drivers fa-fw"></i>&nbsp; Overview</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>&nbsp; Views</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp; Traffic</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-drivers fa-fw"></i>&nbsp; Traffic</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>&nbsp; Geo</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>&nbsp; Orders</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>&nbsp; News</a>
@@ -78,6 +78,27 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
   <hr>
   <div class="w3-container">
+
+    <!-- Modal -->
+    <div id="id01" class="w3-modal">
+      <div class="w3-modal-content w3-card-5">
+        <header class="w3-container w3-teal"> 
+          <span onclick="document.getElementById('id01').style.display='none'" 
+          class="w3-button w3-display-topright">&times;</span>
+          <h2>User Details</h2>
+        </header>
+        <div class="w3-container" id="modalContent">
+          <!-- <p>Some text..</p>
+          <p>Some text..</p> -->
+        </div>
+        <footer class="w3-container w3-teal">
+          <!-- <p>Modal Footer</p> -->
+        </footer>
+      </div>
+    </div>
+    <!-- modal ends here -->
+
+
     <!-- <h5>Users</h5> -->
     <ul id="listUl" class="w3-ul w3-card-4 w3-white">
 
@@ -113,27 +134,96 @@ $(document).ready(function(){
 /**
  * Listen for from app.JS  admin data
  */
- socket.on("drvFnd", (drivers) => {
-    console.log("The users found elone.html " + drivers);
-    var allDrivers = JSON.parse(drivers);
-    console.log(allDrivers);
 
-    for(var x = 0; x < allDrivers.length; x++){
-      $('#listUl').append(`
-          <li class="w3-padding-16">
-          <div class="w3-container">
-          <h4> ${allDrivers[x].firstName} ${allDrivers[x].lastName}   <span class="w3-opacity w3-medium">${allDrivers[x].createdAt}</span></h4>
-          <p>${allDrivers[x]._id}</p>
-          <p>${allDrivers[x].carType}.</p>   <span class="w3-button w3-right w3-blue w3-round" onclick="alert('hello')">Details</span>
-          </div>
-          </li>
-      `);
-      }
+ socket.on("drvFnd", (drivers) => {
+      console.log("The drivers found elone.html " + drivers);
+      var allDrivers = JSON.parse(drivers);
+      console.log(allDrivers);
+
+      for(var x = 0; x < allDrivers.length; x++){
+        var Name = allDrivers[x].firstName;
+        $('#listUl').append(`
+            <li class="w3-padding-16">
+            <div class="w3-container">
+            <h4> ${allDrivers[x].firstName} ${allDrivers[x].lastName}   <span class="w3-opacity w3-medium">${allDrivers[x].createdAt}</span></h4>
+            <p>${allDrivers[x]._id}</p>
+            <p>${allDrivers[x].phoneNumber}.</p>
+      
+              <span  onclick="driverDetails('${
+                allDrivers[x]._id + "," +
+                allDrivers[x].firstName + "," + 
+                allDrivers[x].lastName + "," + 
+                allDrivers[x].phoneNumber + "," + 
+                allDrivers[x].email + "," + 
+                allDrivers[x].userType + "," + 
+                allDrivers[x].finishedRides + "," + 
+                allDrivers[x].rating + "," + 
+                allDrivers[x].isActive + "," + 
+                allDrivers[x].carDescription + "," + 
+                allDrivers[x].carNumber + "," + 
+                allDrivers[x].profit + "," + 
+                allDrivers[x].createdAt+ "," + 
+                allDrivers[x].updatedAt}')"
+              class="w3-button w3-right w3-blue w3-round">Details</span>
+            </div>
+            </li>
+        `);
+        }
   });
 
 
-
 });
+
+
+  // driver properties
+  const driverKeys = [
+        "_id" ,
+        "firstName",
+        "lastName",
+        "phoneNumber",
+        "email",
+        "userType",
+        "finishedRides",
+        "rating",
+        "isActive",
+        "carDescription",
+        "carNumber",
+        "profit",
+        "createdAt",
+        "updatedAt"
+    ];
+
+
+  // Net -> Let driver data show in the modal
+  // works
+  function driverDetails(driverClicked){
+    // var obj = JSON.parse(driverClicked);
+      document.getElementById('id01').style.display='block';
+      const driver = driverClicked.split(',');
+      console.log('The driver name ' + driver);
+      // var driver = driverClicked ;
+
+      document.getElementById("modalContent").innerText = "";
+    for(var x = 0; x < driver.length; x++){
+        const node = document.createElement("p");
+        const textnode = document.createTextNode(`${driverKeys[x]} : ${driver[x]}`);
+        node.appendChild(textnode);
+        document.getElementById("modalContent").appendChild(node);
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Get the Sidebar
@@ -160,7 +250,7 @@ function w3_close() {
 }
 
 
-// http://localhost:3000/user/
-// "https://chase.ewquest.com/user/",
+// http://localhost:3000/driver/
+// "https://chase.ewquest.com/driver/",
 
 </script>

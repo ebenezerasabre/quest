@@ -37,7 +37,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <div class="w3-col s8 w3-bar">
       <span>Welcome, <strong>Mike</strong></span><br>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-ride"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-booking"></i></a>
       <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
     </div>
   </div>
@@ -47,9 +47,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   </div>
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-rides fa-fw"></i>&nbsp; Overview</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-books fa-fw"></i>&nbsp; Overview</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-eye fa-fw"></i>&nbsp; Views</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-rides fa-fw"></i>&nbsp; Traffic</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-books fa-fw"></i>&nbsp; Traffic</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bullseye fa-fw"></i>&nbsp; Geo</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>&nbsp; Orders</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>&nbsp; News</a>
@@ -68,7 +68,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-dashboard"></i> Active Ride Requests</b></h5>
+    <h5><b><i class="fa fa-dashboard"></i> Bookings </b></h5>
   </header>
 
   <hr>
@@ -85,7 +85,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <header class="w3-container w3-teal"> 
           <span onclick="document.getElementById('id01').style.display='none'" 
           class="w3-button w3-display-topright">&times;</span>
-          <h2>Ride Details</h2>
+          <h2>Booking Details</h2>
         </header>
         <div class="w3-container" id="modalContent">
           <!-- <p>Some text..</p>
@@ -111,7 +111,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
   <br>
 
- 
 
 
   <!-- Footer -->
@@ -129,56 +128,41 @@ var socket = io();
 // works
 $(document).ready(function(){
 
-  socket.emit('fndRd', 'All');
+  socket.emit('fndBkng', 'All');
 
 /**
  * Listen for from app.JS  admin data
  */
 
- socket.on("rdFnd", (rides) => {
-      console.log("The rides found elrd.html " + rides);
-      var rideRequests = JSON.parse(rides);
-      console.log(rideRequests);
+ socket.on("bkngFnd", (books) => {
+      console.log("The books found elbkng.html " + books);
+      var allBookings = JSON.parse(books);
+      console.log(allBookings);
 
-      for(var x = 0; x < rideRequests.length; x++){
+      for(var x = 0; x < allBookings.length; x++){
+        var Name = allBookings[x].firstName;
         $('#listUl').append(`
             <li class="w3-padding-16">
             <div class="w3-container">
-            <h4> ${rideRequests[x].entryPoint.split('&')[1]} ====== >>>> ${rideRequests[x].exitPoint.split('&')[1]}      <span class="w3-opacity w3-medium">${rideRequests[x].createdAt}</span></h4>
-            <p>${rideRequests[x]._id}</p>
-            <p>${rideRequests[x].phoneNumber}.</p>
+            <h4> ${allBookings[x].pickUp} ==== >>>> ${allBookings[x].dropOff}   <span class="w3-opacity w3-medium">${allBookings[x].createdAt}</span></h4>
+            <p>${allBookings[x]._id}</p>
+            <p>${allBookings[x].carType}.</p>
       
-              <span  onclick="rideDetails('${
-                rideRequests[x]._id + "," +
-                rideRequests[x].userName + "," + 
-                rideRequests[x].userId + "," + 
-                rideRequests[x].userType + "," + 
-                rideRequests[x].phoneNumber + "," + 
+              <span  onclick="driverDetails('${
+                allBookings[x]._id + "," +
+                allBookings[x].customerId + "," + 
+                allBookings[x].carType + "," + 
+                allBookings[x].date + "," + 
+                allBookings[x].time + "," + 
 
-                rideRequests[x].socketId + "," + 
-                rideRequests[x].entryPoint + "," + 
-                rideRequests[x].exitPoint + "," + 
-                rideRequests[x].lat + "," + 
-                rideRequests[x].lng + "," + 
-          
-                rideRequests[x].city+ "," + 
-                rideRequests[x].rideType+ "," + 
-                rideRequests[x].proximityDriver + "," + 
-                rideRequests[x].driverId + "," + 
-                rideRequests[x].dLat + "," + 
+                allBookings[x].pickUp + "," + 
+                allBookings[x].dropOff + "," + 
+                allBookings[x].bookUpdate + "," + 
+                allBookings[x].driverId + "," + 
+                allBookings[x].driverName + "," +
 
-                rideRequests[x].dLng + "," + 
-                rideRequests[x].dArrivalTime + "," + 
-                rideRequests[x].dName + "," + 
-                rideRequests[x].dRideDescription + "," + 
-                rideRequests[x].dRideNumber + "," + 
-
-                rideRequests[x].dFinishedRides + "," + 
-                rideRequests[x].driverReject + "," + 
-                rideRequests[x].rideState + "," + 
-                rideRequests[x].fee + "," + 
-                rideRequests[x].createdAt+ "," + 
-                rideRequests[x].updatedAt}')"
+                allBookings[x].createdAt+ "," + 
+                allBookings[x].updatedAt}')"
               class="w3-button w3-right w3-blue w3-round">Details</span>
             </div>
             </li>
@@ -190,50 +174,38 @@ $(document).ready(function(){
 });
 
 
-  // ride properties
-  const rideKeys = [
-      "_id",
-        "userName",
-        "userId",
-        "userType",
-        "phoneNumber",
-        "socketId",
-        "entryPoint",
-        "exitPoint",
-        "lat",
-        "lng",
-        "city",
-        "rideType",
-        "proximityDriver",
+  // booking properties
+  const bookingKeys = [
+        "_id",
+        "customerId",
+        "carType",
+        "date",
+        "time",
+
+        "pickUp",
+        "dropOff",
+        "bookUpdate",
         "driverId",
-        "dLat",
-        "dLng",
-        "dArrivalTime",
-        "dName",
-        "dRideDescription",
-        "dRideNumber",
-        "dFinishedRides",
-        "driverReject",
-        "rideState",
-        "fee",
+        "driverName",
+
         "createdAt",
         "updatedAt"
     ];
 
 
-  // Net -> Let ride data show in the modal
+  // Net -> Let booking data show in the modal
   // works
-  function rideDetails(rideClicked){
-    // var obj = JSON.parse(rideClicked);
+  function driverDetails(bookingClicked){
+    // var obj = JSON.parse(bookingClicked);
       document.getElementById('id01').style.display='block';
-      const ride = rideClicked.split(',');
-      console.log('The ride name ' + ride);
-      // var ride = rideClicked ;
+      const booking = bookingClicked.split(',');
+      console.log('The booking name ' + booking);
+      // var booking = bookingClicked ;
 
       document.getElementById("modalContent").innerText = "";
-    for(var x = 0; x < ride.length; x++){
+    for(var x = 0; x < booking.length; x++){
         const node = document.createElement("p");
-        const textnode = document.createTextNode(`${rideKeys[x]} : ${ride[x]}`);
+        const textnode = document.createTextNode(`${bookingKeys[x]} : ${booking[x]}`);
         node.appendChild(textnode);
         document.getElementById("modalContent").appendChild(node);
     }
@@ -277,7 +249,7 @@ function w3_close() {
 }
 
 
-// http://localhost:3000/ride/
-// "https://chase.ewquest.com/ride/",
+// http://localhost:3000/booking/
+// "https://chase.ewquest.com/booking/",
 
 </script>

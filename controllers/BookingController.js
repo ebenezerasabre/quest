@@ -37,6 +37,20 @@ exports.findBookingById = (req, res) => {
     });
 };
 
+// show bookings by carType
+// Driver only see bookings of his car type
+exports.findBookingByCarType = (req, res) => {
+    BookingModel.find({carType : req.body.carType})
+    .then((books) => {
+        return res.status(200).send(books);
+    })
+    .catch((err) => {
+        return res.status(500)
+        .send({message: "Error finding booking with carType " + req.body.carType});
+    });
+    
+};
+
 
 /**
  * TODO COUNT
@@ -66,6 +80,8 @@ exports.countBookings = (req, res) => {
  * TODO CREATE
  */
 
+// let date_ob = new Date();
+
 // create a booking record
 exports.createBook = (req, res) => {
     if(!req.body.customerId){
@@ -75,12 +91,12 @@ exports.createBook = (req, res) => {
     // create
     const book = new BookingModel({
         customerId: req.body.customerId,
-        carType: req.body.carType,
-        date: req.body.date,
-        time: req.body.time,
+        rideType: req.body.rideType,
+        date: req.body.date, // date to be picked
+        time: req.body.time,    // time to be picked
         pickUp: req.body.pickUp,
         dropOff: req.body.dropOff,
-        bookUpdate: req.body.bookUpdate,
+        bookUpdate: "Pending",
         driverId: "",
         driverName: "",
     });
