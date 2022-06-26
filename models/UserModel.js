@@ -64,7 +64,6 @@ const schema = new mongoose.Schema({
         desc: "referal link",
         trim: true,
         type: String,
-        required: true,
     },
     referedlLink: { 
         desc: "referal link",

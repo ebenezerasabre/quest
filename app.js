@@ -3,7 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
-http.listen(3000, ()=>{ console.log('ewquest node server running'); });
+http.listen(3000, ()=>{ console.log('quest node server running'); });
 
 /** MiddleWares */
 
@@ -26,14 +26,6 @@ const BookingModel = require('./models/BookingModel');
 // this opens the index.html file as the home page
 // from root file
 app.use(express.static(__dirname+'/public'))
-
-
-/**
- * ROUTEES FOR BuyOut App
- */
-
-app.get("/buy", require('./routes/BuyAboutUsRoutes'));
-
 
 
 
