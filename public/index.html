@@ -1,214 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
-<title>Asabre Ebenezer</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<!-- <link rel="stylesheet" href="../css/extra.css"> -->
+<html>
+    <head>
+        <title>Vergoes</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+        body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
+        .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
+        .fa-anchor,.fa-coffee,.fa-dashboard,.fa-group {font-size:200px}
+        </style>
+        </head>
+<body>
 
-<style>
-  
-body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
-.w3-quarter img{margin-bottom: -6px; cursor: pointer}
-.w3-quarter img:hover{opacity: 0.6; transition: 0.3s}
-
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-</style>
-
-
-
-<!-- <head>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-</head> -->
-
-<body class="w3-padding">
-
-<!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-animate-right w3-top w3-text-light-grey w3-large" style="z-index:3;width:250px;font-weight:bold;display:none;right:0;" id="mySidebar">
-  <a href="javascript:void()" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-32">CLOSE</a>
-  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">PORTFOLIO</a>
-  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">ABOUT ME</a>
-</nav>
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="#home" class="w3-bar-item w3-button"><b>Vergoes</b> Logistics</a>
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+        <a href="#about" class="w3-bar-item w3-button">About</a>
+      <a href="#services" class="w3-bar-item w3-button">Services</a>
+      <a href="#team" class="w3-bar-item w3-button">Team</a>
+      <a href="#contact" class="w3-bar-item w3-button">Contact</a>
+    </div>
+  </div>
 
 
-<!-- Top menu on small screens -->
-<header class="w3-container w3-top w3-white w3-xlarge w3-padding-16">
-  <!-- <span class="w3-left w3-padding">Ebenezer Asabre</span>
-  <span class="w3-left w3-padding">{{name}}</span> -->
-  <a href="javascript:void(0)" class="w3-right w3-button w3-white" onclick="w3_open()">☰</a>
+    <!-- Navbar on small screens -->
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+
+    <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+        <a href="#about"  onclick="myFunction()" class="w3-bar-item w3-button w3-padding-large">About</a>
+        <a href="#services"  onclick="myFunction()" class="w3-bar-item w3-button w3-padding-large">Services</a>
+        <a href="#team"  onclick="myFunction()" class="w3-bar-item w3-button w3-padding-large">Team</a>
+        <a href="#contact"  onclick="myFunction()" class="w3-bar-item w3-button w3-padding-large">Contact</a>
+      </div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <img class="w3-image" src="./img/4.jpg" alt="Architecture" width="1500" height="800">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>Vergoes</b></span> <span class="w3-hide-small w3-text-light-grey">Logistics</span></h1>
+  </div>
 </header>
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-<!-- !PAGE CONTENT! -->
-<div class="w3-main w3-content" style="max-width:1600px;margin-top:83px">
-  <!-- <div> <div>Above fading</div></div> -->
-
- 
-<!-- //fading project -->
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
 
 
 
-
-  <div class="w3-container">
-    <h4 style="font-family:Arial, Helvetica, sans-serif">PORTFOLIO</h4>
-  </div>
-
-  <!-- Photo grid -->
-  <div class="w3-row w3-left">
-
-    <div class="w3-third w3-center"style="padding: 8px;">
-      <a href="./diplom.html">
-        <img src="/images/first_dir.jpg" style="width: 100%;" alt="FIRST">
-        <span>BEng, Electrical and Electronics Engineereing</span>
-    </a>
-  </div>
-
-    <div class="w3-third w3-center"style="padding: 8px;">
-        <a href="./trans.html">
-          <img src="/images/tr1.png" style="width: 100%;" alt="FIRST">
-          <span>12 channel radio transmitter</span>
-      </a>
-    </div>;
-
-   <div class="w3-third w3-center" style="padding: 8px;">
-      <a href="./drone.html">
-          <img src="/images/dr1.png" style="width: 100%;" alt="Canoeing again">
-          <span>Quadcopter</span>
-      </a>
+<!-- First Grid -->
+<div id="about" class="w3-row-padding w3-padding-64 w3-container">
+    <div class="w3-content">
+      <div class="w3-twothird">
+        <h1>About Us</h1>
+        <h5 class="w3-padding-32">Vergoes is an open source disruptive decentralized logistics (Delog) with a sprint-to-speed in delivery to and from any destination. 
+            Vergoes is a swift application platform for Afro-trade in real-time to assist AFCTA and global trade.
+             </h5>
+  
+        <p class="w3-text-grey">As a company of substance, we capitalize on the confluence of digital technologies to revolutionize customers experience in delivery services.
+              Vergoes is a smart and trusted application with a real-time effect that tilts its style to glue its members along its operations. 
+              It does not only provide customers with experience in delivery but a lifestyle.
+               Vergoes and its underpinning technology has made it easier and faster to transport goods to and from anywhere in the country without a hustle.
+                It is the revolution driving the logistics market to its desirable destination. 
+                It’s an emerging independent and democratized platform for those seeking the best transport and logistics service. 
+                An ecosystem that maps so many solutions at once and only leads to success. It is the buzz on the market set to reshape the future of logistics of things (LOT).</p>
+      </div>
+  
+      <div class="w3-third w3-center">
+        <i class="fa fa-anchor w3-padding-64 w3-text-blue"></i>
+        <!-- <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div> -->
+      </div>
     </div>
-
-    <div class="w3-third w3-center" style="padding: 8px;">
-        <a href="./thesis.html">
-          <img src="/images/thesisPic.png" style="width: 100%;"  alt="Canoeing again">
-          <span>Bachelor's Thesis</span>
-      </a>
-    </div>
-
-    <div class="w3-third w3-center" style="padding: 8px;">
-      <a href="./rec.html">
-        <img src="/images/rc1.png" style="width: 100%;"  alt="Canoeing again">
-        <span>Radio Receiver</span>
-    </a>
-  </div>
-
-    <div class="w3-third w3-center" style="padding: 8px;">
-      <a href="./volt.html">
-        <img src="/images/my_kids.jpg" style="width: 100%;" alt="Canoeing again">
-        <span>Giving Back Time</span>
-     </a>
   </div>
 
 
 
-
-
-  <!-- Modal for full size images on click-->
-  <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
-    <span class="w3-button w3-black w3-xlarge w3-display-topright">×</span>
-    <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-      <img id="img01" class="w3-image">
-      <p id="caption"></p>
+<!-- Second Grid -->
+<div id="services" class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+    <div class="w3-content">
+      <div class="w3-third w3-center">
+        <i class="fa fa-dashboard w3-padding-64 w3-text-blue w3-margin-right"></i>
+      </div>
+  
+      <div class="w3-twothird">
+        <h1>Our Services</h1>
+        <h5 class="w3-padding-32"> Vergoes is the leading brand of delivery services that tokenizes members with pay-to-earn services.
+             Vergoes goes further than a delivery service and seeks to replace everything in the transport world. 
+            Vergoes is set to defreeze the coagulation of backlog within the supply-chain network to refrain it from grinding to a halt.</h5>
+  
+        <p class="w3-text-grey"> As the inefficiencies in supply-chain is holding back all economies to ransom and not just influencing it but dictating to it as well.
+             Vergoes platform enables its users to track and re-route their transport in real-time. Not only do we satisfy clients but grow their businesses as we put large streams of finance behind their operations. 
+             The interest of clients being a priority seems more of an exception than the rule.   Vergoes digital solutions deliver full feasibility into client’s supply-chain and afro-logistics.
+              We transport goods from all modes of transport through the Google map with real time features. 
+             We have a fleet of vehicles dotted around the major cities in the country and mimic the operations of the newest swift transport evolutions.</p>
+      </div>
     </div>
   </div>
 
 
 
 
-  <!-- About section -->
-  <div class="w3-row w3-container w3-center w3-padding-32" >
-    <div class="w3-half">
-   
-      <img src="./images/about_me.png" alt="Me" class="w3-image w3-padding-32" width="413" height="531">
-    
-    </div>
 
-    <div class="w3-half">
-      <div class="w3-content w3-justify" style="max-width:600px">
-        <h3 class="w3-sans-serif" style="margin-top: 100px;" id="about">Asabre Ebenezer</h3>
-        <p class="w3-sans-serif w3-dark-grey w3-padding">BEng, Electrical and Electronics Engineering</p>
-        <p class="w3-padding">I am passionate about Software/Hardware co-design 
-          with two years experience working with different Microcontroller Families.
-           My skills and interests are in Digital/Analog circuits, Embedded Systems and Power Electronics.</p>
-          <p>
-            <a class="w3-margin " href="./resume.html">
-              <button class="w3-button w3-light-grey w3-padding-large w3-margin-top w3-margin-bottom w3-hover-black">View Resume</button>
-            </a>
-          </p>
-          <p>
-            <a class="w3-margin " href="./images/asabreResume.pdf" download="">
-              <button class="w3-button w3-light-grey w3-padding-large w3-margin-top w3-margin-bottom w3-hover-black">Download Resume</button>
-            </a>
-          </p>
-      
+
+<!-- Third Grid -->
+<div id="team" class="w3-row-padding w3-padding-64 w3-container">
+    <div class="w3-content">
+      <div class="w3-twothird">
+        <h1>Our Team</h1>
+        <h5 class="w3-padding-32">We have a firm grip of dexterity on issues of Logistics analytics and Asset management and handle them on aplomb.  Our team of experts consists of logistics software technologists with extensive international and domestic experience who are able to complement the logistics and transport appraisal and business growth opportunities. </h5>
+  
+        <p class="w3-text-grey">We have a sterling reputation in customer delivery and work to the satisfaction of our client’s specific needs.  We create consumer traffic for our client’s product as we develop consumer confidence and reverence as well.  We help clients translate ever increasing amounts of data into actionable business intelligence to minimize risk. We turn market innovations into opportunities for our clients.  
+            In a constantly changing world we are strong and reliable partners to small businesses as well as large-size organizations. Our dedicated team is focused to ensure the best possible service and support for all our clients. We keep our fingers on the pulse of technologies to serve you only the latest swift technology that ease the burden-load of customers and help them through the hardest situation. Our high-end products and services work like a charm for clients and won’t give them a single reason to doubt or complain.
+            Vergoes is the bang on the bucks for investors. With the immense experience and foresight by the team, Vergoes stands to be the best logistics service in the market.
+            </p>
+      </div>
+  
+      <div class="w3-third w3-center">
+        <i class="fa fa-group w3-padding-64 w3-text-blue"></i>
+        <!-- <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+<!-- thematic areas -->
+
+<div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
+    <div class="w3-content w3-center">
+        <h1 class="w3-text-red">Thematic Areas</h1>
+
+     
+
+    <div class="w3-third">
+      <div class="w3-card w3-container w3-margin w3-white" style="min-height:460px">
+      <h3>Point to Point</h3><br>
+      <img class="w3-image" src="./img/4.jpg" alt="Architecture" width="300" height="100">
+      <p>Carrying goods from one-point source to the other. E.g. cement, iron rods etc. from the factory to the end-user is a priority.</p>
+      <p>Companies can connect to the API and not worry about when and how they can provide their goods to the end-user.
+           By just a click from their customers a quick delivery service will be assured.</p>
 
       </div>
     </div>
+    
+    <div class="w3-third">
+      <div class="w3-card w3-container w3-margin w3-white" style="min-height:460px">
+        <h3>Port to client</h3><br>
+      <img class="w3-image" src="./img/13.jpg" alt="Architecture" width="300" height="100">
+      <p>Freighting in goods from the port the forecourt of our client. 
+          We carry goods from the Airport, harbor by train, cargoes, motor and any form of transport.</p>
+      <p>Commuting home wares from one location to a new location is our hallmark.</p>
 
-    <!-- <h4><b>About Me</b></h4> -->
+      </div>
+    </div>
+    
+    <div class="w3-third">
+      <div class="w3-card w3-container w3-margin w3-white" style="min-height:460px">
+        <h3>Farm to market</h3><br>
+        <img class="w3-image" src="./img/8.jpg" alt="Architecture" width="300" height="100">
+      <p class="">Transporting healthy farm produce from the farm to the market is a core mandate.</p>
+      <p>Packaging of products is a specialty and we package to suit the style and specifications of clients.</p>
+     
+      </div>
+    </div>
 
+
+
+
+
+    </div>
   </div>
 
 
-  <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div>
+
+
+
+  <!-- Contact Section -->
+  <div class="w3-container w3-padding-64" id="contact">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Contact</h3>
+    <form action="/action_page.php" target="_blank">
+      <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="Email" required name="Email">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="Subject" required name="Subject">
+      <input class="w3-input w3-section w3-border" type="text" placeholder="Comment" required name="Comment">
+      <button class="w3-button w3-black w3-section" type="submit">
+        <i class="fa fa-paper-plane"></i> SEND MESSAGE
+      </button>
+    </form>
+  </div>
+  
+<!-- Image of location/map -->
+<div class="w3-container">
+  <img src="/w3images/map.jpg" class="w3-image" style="width:100%">
+</div>
 
 <!-- End page content -->
 </div>
 
-<script>
-// Script to open and close sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-}
 
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
-
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-
-</script>
-
-<!-- // image slider -->
-
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
 
 <script>
-  var slideIndex = 0;
-  showSlides();
-  
-  function showSlides() {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    var dots = document.getElementsByClassName("dot");
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) {slideIndex = 1}    
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex-1].style.display = "block";  
-    dots[slideIndex-1].className += " active";
-    setTimeout(showSlides, 2000); // Change image every 2 seconds
+    // Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
   }
-  </script>
-
+}
+</script>
 
 </body>
 </html>
